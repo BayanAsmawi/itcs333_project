@@ -27,15 +27,46 @@
           </ul>
     </header><br>
     <main>
-     <section class="sec">Course Notes</section>
-     <div class="choose">
-        <label for="course">Choose Course </label>
-       <span><input id="course" type="text" placeholder="ITCS113"></span>
-     </div>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Campus Hub - Course Notes</title>
+            <link rel="stylesheet" href="course-notes.css">
+        </head>
+        <body>
+            <div class="container">
+                <div class="search-section">
+                    <h2 style="font-family: Monaco;">Search Course Notes</h2>
+                    <form id="search-form">
+                        <input type="text" id="course-code" name="course-code" placeholder="Enter Course Code (e.g., ITCC113)" required>
+                        <button type="submit">Search Notes</button>
+                    </form>
+                    <div id="search-results">
+                        <!-- Search results will show here -->
+                    </div>
+                </div>
+        
+                <div class="upload-section">
+                    <h2 style="font-family: Monaco;">Upload Course Notes</h2>
+                    <span>What course you want to add notes to: </span>
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <input type="text" id="upload-course-code" name="upload-course-code" placeholder="e.g., ITCC113" required>
+                        <input type="file" id="notes-file" name="notes-file" accept=".pdf,.docx,.png,.jpg,.jpeg,.gif" required>
+                        <button type="submit">Upload Notes</button>
+                    </form>
+                    <div id="upload-status">
+                        <!-- Upload status messages will show here -->
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
       
     </main>
     <footer class="footer">
-        &copy; 2025 Your Website | All Rights Reserved
+        &copy; 2025 Campus Hub | All Rights Reserved
         
     </footer>
 </body>
