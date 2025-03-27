@@ -76,6 +76,10 @@ span {
   color: #754E1A;
   font-weight: bold;
 }
+.sec {
+  color: darkslateblue;
+  font-weight: bold;
+}
 form {
   display: flex;
   flex-direction: column;
