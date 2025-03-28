@@ -3,6 +3,7 @@ body {
   background-color: #ffcf9d;
   padding-top: 30px;
   font-family: Monaco;
+  min-height: 100vh;
 }
 h1 {
   margin: 5px;
@@ -137,4 +138,5 @@ footer {
   text-align: left;
   padding: 10px;
   color: #333;
+  position: absolute;
 }

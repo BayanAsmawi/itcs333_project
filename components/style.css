@@ -3,6 +3,8 @@ body {
   background-color: #ffcf9d;
   padding-top: 30px;
   font-family: Monaco;
+  min-height: 100vh;
+  position: relative;
 }
 h1 {
   margin: 5px;
@@ -58,6 +60,7 @@ li a:hover {
   gap: 20px;
   padding: 30px;
   margin-bottom: auto;
+  border-radius: 10px;
 }
 .box {
   width: 160px;
@@ -70,6 +73,7 @@ li a:hover {
   background-color: #c14600;
   /* font-size: 26px; */
   border-radius: 10px;
+  margin: 15px;
 }
 .box a {
   color: beige;
@@ -97,6 +101,7 @@ footer {
   text-align: left;
   padding: 10px;
   color: #333;
+  position: absolute;
 }
 
 .sec {
