@@ -1,14 +1,13 @@
 /* body and nav-bar styling */
 body {
-  background-color: #FFCF9D;
+  background-color: #ffcf9d;
   padding-top: 30px;
   font-family: Monaco;
 }
 h1 {
-  margin: 5px; 
+  margin: 5px;
   padding-top: 10px;
   padding-left: 10px;
-  
 }
 .nav-bar {
   margin-bottom: 0px;
@@ -16,12 +15,11 @@ h1 {
   padding-bottom: 5px;
   justify-content: center;
   height: 70px;
-  background-color: #A89C29;
+  background-color: #a89c29;
 }
 .nav-bar > li {
   display: inline;
   justify-content: center;
-  
 }
 
 li a {
@@ -43,12 +41,22 @@ li a:hover {
   font-size: 24px;
   font-family: Monaco;
   width: 30%;
-  border-bottom: 4px solid #C14600;
-
+  border-bottom: 4px solid #c14600;
+}
+#search {
+  float: right;
+  padding: 6px;
+  border: none;
+  background-color: wheat;
+  margin-top: 8px;
+  margin-right: 16px;
+  width: 15%;
+  height: 40px;
+  color: #333;
 }
 
 .container {
-  background-color: #FF9D23;
+  background-color: #ff9d23;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -59,11 +67,12 @@ li a:hover {
   gap: 30px;
 }
 
-.search-section, .upload-section {
-  background-color: #A89C29;
+.search-section,
+.upload-section {
+  background-color: #a89c29;
   border-radius: 8px;
   padding: 20px;
-  border: 1px solid #A89C29;
+  border: 1px solid #a89c29;
   margin: 30px;
 }
 
@@ -73,7 +82,7 @@ h2 {
   text-align: center;
 }
 span {
-  color: #754E1A;
+  color: #754e1a;
   font-weight: bold;
 }
 .sec {
@@ -86,7 +95,8 @@ form {
   gap: 15px;
 }
 
-input[type="text"], input[type="file"] {
+input[type="text"],
+input[type="file"] {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -108,7 +118,8 @@ button:hover {
   background-color: #0056b3;
 }
 
-#search-results, #upload-status {
+#search-results,
+#upload-status {
   margin-top: 15px;
   text-align: center;
   color: #666;
@@ -116,16 +127,14 @@ button:hover {
 #notes-file {
   background-color: wheat;
 }
-  main {
-    padding-bottom:10px ;
-  }
-  /* footer styling */ 
-  footer {
-    width: 100%;
-    background-color: #F0A04B;
-    text-align: left;
-    padding: 10px;
-    color: #333;
+main {
+  padding-bottom: 10px;
 }
-
-
+/* footer styling */
+footer {
+  width: 100%;
+  background-color: #f0a04b;
+  text-align: left;
+  padding: 10px;
+  color: #333;
+}
