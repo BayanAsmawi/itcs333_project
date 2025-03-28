@@ -4,7 +4,8 @@ body {
   padding-top: 30px;
   font-family: Monaco;
   min-height: 100vh;
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 h1 {
   margin: 5px;
@@ -101,7 +102,7 @@ footer {
   text-align: left;
   padding: 10px;
   color: #333;
-  position: absolute;
+  margin-top: auto;
 }
 
 .sec {
