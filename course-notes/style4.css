@@ -58,7 +58,7 @@ li a:hover {
   flex-direction: column;
   gap: 30px;
 }
-
+/* Search bar style */
 .search-section,
 .upload-section {
   background-color: #a89c29;
@@ -128,8 +128,7 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
-#search-results,
+/* Upload bar */
 #upload-status {
   margin-top: 15px;
   text-align: center;
@@ -151,8 +150,9 @@ footer {
   margin-top: auto;
 }
 
+/* Results page style */
 #search-results {
-  background-color: white;
+  background-color: #f5e7b2;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 15px;
@@ -168,49 +168,50 @@ footer {
 }
 
 #results-count {
+  color: #111;
   font-weight: bold;
+  padding-bottom: 15px;
 }
 
-#sorting-controls {
+/* #sorting-controls {
   display: flex;
   align-items: center;
   gap: 10px;
-}
+} */
 
 #sorting-controls label {
   font-weight: bold;
+  color: #111;
+  padding: 5px;
 }
 
 #sorting-controls select {
   padding: 6px;
-  border: 1px solid #ccc;
+  background-color: #f9d689;
+  border: 3px solid #e0a75e;
   border-radius: 4px;
+  color: #111;
 }
 
-.result-item {
+#result-item {
   padding: 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e0a75e;
 }
 
-.result-item:last-child {
+#result-item:last-child {
   border-bottom: none;
 }
 
-.result-title {
+#result-title {
   font-size: 18px;
   color: #1a73e8;
   margin-bottom: 5px;
 }
 
-.result-meta {
+#result-meta {
   color: #555;
   font-size: 14px;
   margin-bottom: 10px;
-}
-
-.result-excerpt {
-  color: #333;
-  line-height: 1.5;
 }
 
 .pagination {
