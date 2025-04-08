@@ -46,17 +46,6 @@ li a:hover {
   width: 30%;
   border-bottom: 4px solid #c14600;
 }
-#search {
-  float: right;
-  padding: 6px;
-  border: none;
-  background-color: wheat;
-  margin-top: 8px;
-  margin-right: 16px;
-  width: 15%;
-  height: 40px;
-  color: #333;
-}
 
 .container {
   background-color: #ff9d23;
@@ -79,13 +68,32 @@ li a:hover {
   margin: 30px;
 }
 
+#filter-group {
+  margin-bottom: 10px;
+}
+
+#filter-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #111;
+}
+
+#filter-group select {
+  padding: 8px;
+  background-color: wheat;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  color: #666;
+}
+
 h2 {
   color: #333;
   margin-bottom: 15px;
   text-align: center;
 }
 span {
-  color: #754e1a;
+  color: #111;
   font-weight: bold;
 }
 .sec {
@@ -141,4 +149,92 @@ footer {
   padding: 10px;
   color: #333;
   margin-top: auto;
+}
+
+#search-results {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+#results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+#results-count {
+  font-weight: bold;
+}
+
+#sorting-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#sorting-controls label {
+  font-weight: bold;
+}
+
+#sorting-controls select {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.result-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-title {
+  font-size: 18px;
+  color: #1a73e8;
+  margin-bottom: 5px;
+}
+
+.result-meta {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.result-excerpt {
+  color: #333;
+  line-height: 1.5;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.pagination-button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination-button.active {
+  background-color: #4285f4;
+  color: white;
+  border-color: #4285f4;
+}
+
+.pagination-button:hover:not(.active) {
+  background-color: #f1f1f1;
 }

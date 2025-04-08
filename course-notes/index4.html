@@ -17,19 +17,10 @@
         <li><a href="">Home</a></li>
         <li><a href="">Contact</a></li>
         <li><a href="">About</a></li>
-        <li>
-          <input
-            class="search"
-            id="search"
-            type="text"
-            placeholder="Search.."
-          />
-        </li>
       </ul>
     </header>
     <br />
     <main>
-      <section class="sec">Course Notes</section>
       <div class="container">
         <div class="search-section">
           <h2 style="font-family: Monaco">Search Course Notes</h2>
@@ -41,16 +32,44 @@
               placeholder="Enter Course Code (e.g., ITCC113)"
               required
             />
-            <button type="submit">Search Notes</button>
+            <div id="filter-options" class="filter-options">
+              <div id="filter-group" class="filter-group">
+                <label for="college">College</label>
+                <select id="college">
+                  <option value="">All Colleges</option>
+                  <option value="applied_studies">APPLIED STUDIES</option>
+                  <option value="arts">ARTS</option>
+                  <option value="teachers">BAHRAIN TEACHERS COLLEGE</option>
+                  <option value="business">BUSINESS ADMINISTRATION</option>
+                  <option value="engineering">ENGINEERING</option>
+                  <option value="health">
+                    COLLEGE OF HEALTH AND SPORT SCIENCES
+                  </option>
+                  <option value="it">INFORMATION TECHNOLOGY</option>
+                  <option value="law">LAW</option>
+                  <option value="science">SCIENCE</option>
+                </select>
+              </div>
+    
+              <div id="filter-group" class="filter-group">
+                <label for="date">Date Added</label>
+                <select id="date">
+                  <option value="">Anytime</option>
+                  <option value="today">Today</option>
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                  <option value="year">This Year</option>
+                </select>
+              </div>
+            <button type="submit">Search</button>
+            <button type="submit">Clear</button>
+
           </form>
-          <div id="search-results">
-            <!-- Search results will show here -->
-          </div>
         </div>
 
         <div class="upload-section">
           <h2 style="font-family: Monaco">Upload Course Notes</h2>
-          <span>What course you want to add notes to: </span>
+          <span>Write the course code you want to add notes to: </span>
           <form id="upload-form" enctype="multipart/form-data">
             <input
               type="text"
@@ -59,6 +78,23 @@
               placeholder="e.g., ITCC113"
               required
             />
+            <div id="filter-group" class="filter-group">
+              <label for="college">Select College: </label>
+              <select id="college">
+                <option value="">All Colleges</option>
+                <option value="applied_studies">APPLIED STUDIES</option>
+                <option value="arts">ARTS</option>
+                <option value="teachers">BAHRAIN TEACHERS COLLEGE</option>
+                <option value="business">BUSINESS ADMINISTRATION</option>
+                <option value="engineering">ENGINEERING</option>
+                <option value="health">
+                  COLLEGE OF HEALTH AND SPORT SCIENCES
+                </option>
+                <option value="it">INFORMATION TECHNOLOGY</option>
+                <option value="law">LAW</option>
+                <option value="science">SCIENCE</option>
+              </select>
+            </div>
             <input
               type="file"
               id="notes-file"
@@ -67,6 +103,8 @@
               required
             />
             <button type="submit">Upload Notes</button>
+            <button type="submit">Cancle</button>
+            <button type="submit">Edit</button>
           </form>
           <div id="upload-status">
             <!-- Upload status messages will show here -->
