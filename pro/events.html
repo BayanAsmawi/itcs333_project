@@ -4,13 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Calendar</title>
-    <link rel="stylesheet" href="style.css">
+    
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
 </head>
 <body>
-   
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
     <style>
+        #search {
+    float: right;
+    padding: 6px;
+    border: none;
+    background-color: wheat;
+    margin-top: 8px;
+    margin-right: 16px;
+    width: 15%;
+    height: 40px;
+    color: #333;
+  }
         body {
             font-family: 'Arial', sans-serif;
             background-color: #ffcf9d;
@@ -111,7 +122,32 @@
         .item-creation-form label {
             margin-top: 15px;
         }
-
+        .nav-bar {
+    margin-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    justify-content: center;
+    height: 70px;
+    background-color: #a89c29;
+  }
+  .nav-bar > li {
+    display: inline;
+    justify-content: center;
+  }
+  
+  li a {
+    display: inline;
+    color: white;
+    text-align: left;
+    padding-top: 16px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    text-decoration: none;
+    font-family: Monaco;
+  }
+  li a:hover {
+    color: #111;
+  }
         .item-creation-form input {
             padding: 10px;
             border: 1px solid #cccccc;
@@ -125,12 +161,13 @@
         }
 
         footer {
-            text-align: center;
-            padding: 15px;
-            background: #f1f1f1;
-            border-top: 1px solid #ddd;
-            margin-top: 20px;
-        }
+    width: 100%;
+    background-color: #f0a04b;
+    text-align: left;
+    padding: 10px;
+    color: #333;
+    margin-top: auto;
+  }
 
         footer p {
             margin: 0;
@@ -138,9 +175,16 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Campus Hub: Events Calendar</h1>
-    </header>
+    
+        <header>
+            <ul class="nav-bar">
+              <li><a href="">Home</a></li>
+              <li><a href="">Contact</a></li>
+              <li><a href="">About</a></li>
+              <input class="search" id="search" type="text" placeholder="Search.." />
+            </ul>
+          </header>
+    
     
   
     <main>
@@ -200,8 +244,8 @@
             <a href="index.html">Back to Listing</a>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2025 Campus Hub. All Rights Reserved.</p>
-    </footer>
+    
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+
 </body>
 </html>
