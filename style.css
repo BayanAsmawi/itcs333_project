@@ -1,5 +1,5 @@
  /* styles.css */
-
+ 
 .filters {
     display: flex;
     gap: 1rem;
@@ -34,3 +34,11 @@
     color: white;
   }
   
+  footer {
+    width: 100%;
+    background-color: #f0a04b;
+    text-align: left;
+    padding: 10px;
+    color: #333;
+    margin-top: auto;
+  }
