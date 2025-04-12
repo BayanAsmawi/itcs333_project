@@ -1,0 +1,130 @@
+ /* styles.css */
+ 
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .actions {
+    margin-top: 1rem;
+  }
+  
+  .actions button.delete {
+    background-color: #ff6b6b;
+    color: white;
+  }
+  
+ footer{
+  width: 100%;
+  background-color: #f0a04b;
+  text-align: left;
+  padding: 10px;
+  color: #333;
+  margin-top: auto;
+ }
+ 
+ 
+  .nav-bar {
+    margin-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    justify-content: center;
+    height: 70px;
+    background-color: #a89c29;
+  }
+  .nav-bar > li {
+    display: inline;
+    justify-content: center;
+  }
+
+  h1 {
+    margin: 5px;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  #search {
+    float: right;
+    padding: 6px;
+    border: none;
+    background-color: wheat;
+    margin-top: 8px;
+    margin-right: 16px;
+    width: 15%;
+    height: 40px;
+    color: #333;
+  }
+
+ .grid{
+  color: black;
+  padding: 6px;
+  font-size: 24px;
+  font-family: Monaco;
+  width: 40%;
+  border-bottom: 4px solid #c14600;
+ }
+ main {
+  padding-bottom: 10px;
+}
+
+.comments{
+  color: black;
+  padding: 6px;
+  font-size: 24px;
+  font-family: Monaco;
+  width: 40%;
+  border-bottom: 4px solid #c14600;
+}
+ 
+.container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: stretch;
+  background-color: #ff9d23;
+  gap: 20px;
+  padding: 30px;
+  margin-bottom: auto;
+  border-radius: 10px;
+}
+
+.pagination{
+  margin-bottom: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  justify-content: center;
+  height: 70px;
+  background-color: #a89c29;
+}
+
+body {
+  background-color: #ffcf9d;
+  padding-top: 30px;
+  font-family: Monaco;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+ 
