@@ -244,7 +244,57 @@ body {
     color: #493628;
     margin-top: auto;
   }
-  
+
+/* create group page */
+  .create-group-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #f0a04b;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+        
+.form-group {
+  margin-bottom: 20px;
+}
+        
+ .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #493628;
+}
+        
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0a75e;
+  border-radius: 5px;
+  background-color: wheat;
+  color: #493628;
+}
+        
+.form-control:focus {
+  outline: none;
+  border-color: #c14600;
+}
+        
+.btn-primary {
+  background-color: #c14600;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s;
+  margin-top: 15px;
+}
+        
+.btn-primary:hover {
+  background-color: #a13800;
+}
   /* Responsive Design */
   @media (max-width: 600px) {
     .nav-bar {
