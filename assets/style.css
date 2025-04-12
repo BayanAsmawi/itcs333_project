@@ -1,0 +1,118 @@
+/* body and nav-bar styling */
+body {
+  background-color: #ffcf9d;
+  padding-top: 30px;
+  font-family: Monaco;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  margin: 40px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.nav-bar {
+  margin-bottom: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  justify-content: center;
+  height: 57px;
+  background-color: #a89c29;
+}
+.nav-bar > li {
+  display: inline;
+  justify-content: center;
+}
+
+li a {
+  display: inline;
+  color: white;
+  text-align: left;
+  padding-top: 16px;
+  padding-bottom: 20px;
+  padding-left: 15px;
+  text-decoration: none;
+  font-family: Monaco;
+}
+li a:hover {
+  color: #111;
+}
+#search {
+  float: right;
+  padding: 6px;
+  border: none;
+  background-color: wheat;
+  margin-top: 8px;
+  margin-right: 40px;
+  width: 30%;
+  height: 30px;
+  color: #333;
+}
+
+/* flex box styling */
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: stretch;
+  background-color: #ff9d23;
+  gap: 20px;
+  padding: 30px;
+  margin-bottom: auto;
+  border-radius: 10px;
+}
+.box {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #c14600;
+  /* font-size: 26px; */
+  border-radius: 10px;
+  margin: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.box a {
+  color: beige;
+  font-family: Monaco;
+  text-decoration: none;
+  padding: 10px;
+}
+.box :hover {
+  color: black;
+}
+
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+main {
+  padding-bottom: 10px;
+}
+/*footer styling */
+footer {
+  width: 100%;
+  background-color: #f0a04b;
+  text-align: left;
+  padding: 10px;
+  color: #333;
+  margin-top: auto;
+}
+
+.sec {
+  color: black;
+  padding: 6px;
+  font-size: 24px;
+  font-family: Monaco;
+  width: 40%;
+  border-bottom: 4px solid #c14600;
+}
