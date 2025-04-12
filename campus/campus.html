@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="campus.css" />
 </head>
 <body>
+  <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
     <header>
         <ul class="nav-bar">
           <li><a href="">Home</a></li>
@@ -17,10 +18,11 @@
         </ul>
       </header>
       <br />
-  <main class="container my-4">
+  <main class="container my-4" style="background-color: #ff9d23; border-radius: 10px ;  gap: 20px;
+  padding: 30px; margin-bottom: auto;">
     <section class="d-flex justify-content-between mb-3">
       <input type="search" class="form-control w-50" placeholder="Search news..." />
-      <button class="btn btn-success">Add New News</button>
+      <a href="create.html" class="btn button" style="background-color: rgba(156, 83, 31, 0.699);">add new news</a>
     
     </section>
 
@@ -28,9 +30,9 @@
       <article class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">New Library Opens</h5>
+            <h5 class="card-title" id="card-title">New Library Opens</h5>
             <p class="card-text">The campus opens a new digital library with 24/7 access.</p>
-            <a href="detail.html" class="btn btn-primary">Read More</a>
+            <a href="detail.html" class="btn button" style="background-color: rgba(156, 83, 31, 0.699);" >Read More</a>
           </div>
         </div>
       </article>
