@@ -8,7 +8,7 @@ body {
   flex-direction: column;
 }
 h1 {
-  margin: 5px;
+  margin: 40px;
   padding-top: 10px;
   padding-left: 10px;
 }
@@ -17,7 +17,7 @@ h1 {
   padding-top: 5px;
   padding-bottom: 5px;
   justify-content: center;
-  height: 70px;
+  height: 57px;
   background-color: #a89c29;
 }
 .nav-bar > li {
@@ -44,9 +44,9 @@ li a:hover {
   border: none;
   background-color: wheat;
   margin-top: 8px;
-  margin-right: 16px;
-  width: 15%;
-  height: 40px;
+  margin-right: 40px;
+  width: 30%;
+  height: 30px;
   color: #333;
 }
 
@@ -75,6 +75,9 @@ li a:hover {
   /* font-size: 26px; */
   border-radius: 10px;
   margin: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .box a {
   color: beige;
