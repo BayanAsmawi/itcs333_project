@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Club Activity</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+</head>
+<body>
+    <h1 style="color: #493628; font-family: Papyrus">Add Club Activity</h1>
+
+    <div class="form-container">
+        <form class="activity-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required />
+
+            <label for="club">Club:</label>
+            <select id="club" name="club" required>
+                <option disabled selected>Select Club</option>
+                <option value="Art Club">Art Club</option>
+                <option value="Astrology Club">Astrology Club</option>
+                <option value="Book Club">Book Club</option>
+                <option value="Music Club">Music Club</option>
+                <option value="Robotics Club">Robotics Club</option>
+                <option value="Sports Club">Sports Club</option>
+            </select>
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="3" required></textarea>
+
+            <label for="datetime">Date and Time:</label>
+            <input type="datetime-local" id="datetime" name="datetime" required />
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" />
+
+            <div class="form-buttons">
+                 <button><a href="index.html">Cancl</a>e</button>
+                <button type="submit">Add Activity</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+</body>
+</html>
