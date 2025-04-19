@@ -1,68 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create New Study Group | Campus Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+  </head>
+  <body>
     <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
     <header>
       <ul class="nav-bar">
         <li><a href="/assets/index.html">Home</a></li>
-        <li><a href="">Contact</a></li>
-        <li><a href="">About</a></li>
+        <li><a href="/assets/contact.html">Contact</a></li>
+        <li><a href="/assets/about.html">About</a></li>
         <input class="search" id="search" type="text" placeholder="Search.." />
       </ul>
     </header>
-    
+
     <div class="create-group-container">
-        <h2 style="color: #c14600; border-bottom: 2px solid #c14600; padding-bottom: 10px;">Create New Study Group</h2>
-        
-        <form id="createGroupForm">
-            <div class="form-group">
-                <label for="groupName">Group Name</label>
-                <input type="text" id="groupName" class="form-control" placeholder="e.g., Advanced Algorithms Study Group" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="course">Course/Subject</label>
-                <input type="text" id="course" class="form-control" placeholder="e.g., CS 580" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="department">Department</label>
-                <select id="department" class="form-control" required>
-                    <option value="">Select Department</option>
-                    <option value="cs">Computer Science</option>
-                    <option value="eng">Engineering</option>
-                    <option value="bus">Business</option>
-                    <option value="biols">Biology</option>
-                    <option value="chemy">Chemistry</option>
-                    <option value="math">Mathematics</option>
-                    <option value="phycs">Physics</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="description">Group Description</label>
-                <textarea id="description" class="form-control" rows="5" placeholder="What will your group focus on? What are your study goals? Will it be virtual or in person?" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="maxMembers">Maximum Members</label>
-                <input type="number" id="maxMembers" class="form-control" min="2" max="20" placeholder="e.g., 5" required>
-            </div>
-            
-            <button type="submit" class="btn-primary">Create Study Group</button>
-        </form>
-    </div>
-    
-    <footer>
-        <div class="footer">
-            &copy; 2025 Campus Hub | All Rights Reserved
-            <br>
-            Helping university students connect and succeed together.
+      <h2
+        style="
+          color: #c14600;
+          border-bottom: 2px solid #c14600;
+          padding-bottom: 10px;
+        "
+      >
+        Create New Study Group
+      </h2>
+
+      <form id="createGroupForm">
+        <div class="form-group">
+          <label for="groupName">Group Name</label>
+          <input
+            type="text"
+            id="groupName"
+            class="form-control"
+            placeholder="e.g., Advanced Algorithms Study Group"
+            required
+          />
         </div>
+
+        <div class="form-group">
+          <label for="course">Course/Subject</label>
+          <input
+            type="text"
+            id="course"
+            class="form-control"
+            placeholder="e.g., CS 580"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department</label>
+          <select id="department" class="form-control" required>
+            <option value="">Select Department</option>
+            <option value="cs">Computer Science</option>
+            <option value="eng">Engineering</option>
+            <option value="bus">Business</option>
+            <option value="biols">Biology</option>
+            <option value="chemy">Chemistry</option>
+            <option value="math">Mathematics</option>
+            <option value="phycs">Physics</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Group Description</label>
+          <textarea
+            id="description"
+            class="form-control"
+            rows="5"
+            placeholder="What will your group focus on? What are your study goals? Will it be virtual or in person?"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="maxMembers">Maximum Members</label>
+          <input
+            type="number"
+            id="maxMembers"
+            class="form-control"
+            min="2"
+            max="20"
+            placeholder="e.g., 5"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn-primary">Create Study Group</button>
+      </form>
+    </div>
+
+    <footer>
+      <div class="footer">
+        &copy; 2025 Campus Hub | All Rights Reserved
+        <br />
+        Helping university students connect and succeed together.
+      </div>
     </footer>
+  </body>
+</html>
