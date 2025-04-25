@@ -113,33 +113,79 @@
         </div>
       </div>
     </main>
-     <!-- Comment Section -->
-     <div class="comments-section">
-      <div class="comments-header">Comments</div>
-      
-      <!-- Comment Form -->
-      <div class="comment-form">
-          <textarea placeholder="Add your comment..."></textarea>
-          <button>Post Comment</button>
-      </div>
-      
-      <!-- Sample Comments -->
-      <div class="comment">
-          <div class="comment-header">
-              <div class="commenter-name">Sara Al-Mahmood</div>
-              <div class="comment-date">April 6, 2025</div>
-          </div>
-          <div class="comment-text"> 
-              I found a few errors in the Database Systems review. The section on normalization forms has some incorrect examples. I'll upload a corrected version tomorrow.
-          </div>
-      </div>
-  </div>
+
+      <!-- Comment Section -->
+      <div class="comments-section">
+        <div class="comments-header">Comments</div>
+        
+        <!-- Comment Form -->
+        <form class="comment-form">
+            <input type="text" id="username" placeholder="Write your name" required> 
+            <textarea placeholder="Add your comment..." required></textarea>
+            <button>Post Comment</button>
+        </form>
+        
+        <!-- Initial Sample Comment -->
+        <div class="comment">
+            <div class="comment-header">
+                <div class="commenter-name">Sara Al-Mahmood</div>
+                <div class="comment-date">April 6, 2025</div>
+            </div>
+            <div class="comment-text">
+                I found a few errors in the Database Systems review. The section on normalization forms has some incorrect examples. I'll upload a corrected version tomorrow.
+            </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div id="loading" class="loading">Loading comments...</div>
+        
+        <!-- API Comments will be inserted here -->
+        <div id="api-comments"></div>
+    </div>
   
     <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
     <script>
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('added-date').value = today;
+
+      // cancel button functionality
+      
+      // Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Get reference to the form and cancel button
+  const uploadForm = document.getElementById('upload-form');
+  const cancelButton = uploadForm.querySelectorAll('button[type="submit"]')[1]; // The cancel button
+  
+  // Fix the button type and typo
+  cancelButton.type = 'button'; // Change from "submit" to "button"
+  cancelButton.textContent = 'Cancel'; // Fix the typo "Cancle" to "Cancel"
+  
+  // Add event listener for the cancel button
+  cancelButton.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent any default behavior
+    
+    // Clear all form fields
+    document.getElementById('upload-course-code').value = '';
+    document.getElementById('college').selectedIndex = 0; // Reset to first option
+    document.getElementById('course-notes-title').value = '';
+    document.getElementById('course-notes-body').value = '';
+    
+    // Optional feedback
+    const uploadStatus = document.getElementById('upload-status');
+    if (uploadStatus) {
+      uploadStatus.textContent = 'Form cleared';
+      
+      // Clear the status message after 2 seconds
+      setTimeout(() => {
+        uploadStatus.textContent = '';
+      }, 2000);
+    }
+  });
+});
     </script>
     <script src="search.js"></script>
+    <script src="comments.js">
+    </script>
+    
   </body>
 </html>
