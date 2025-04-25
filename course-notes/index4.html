@@ -96,10 +96,10 @@
                 <option value="science">SCIENCE</option>
               </select>
             </div>
-            <label for="course-notes-title">Notes Title</label>
-            <textarea name="course-notes-title" id="course-notes-title"></textarea>
-            <label for="course-notes-body">Enter your notes content</label>
-            <textarea name="course-notes-body" id="course-notes-body"></textarea>
+            <label for="course-notes-title" style="color: #111; font-weight: bold;">Notes Title:</label>
+            <textarea name="course-notes-title" id="course-notes-title" required></textarea>
+            <label for="course-notes-body" style="color: #111; font-weight: bold;">Enter your notes content:</label>
+            <textarea name="course-notes-body" id="course-notes-body" required></textarea>
 
             <input type="hidden" id="added-date" name="added-date">
 
@@ -140,5 +140,6 @@
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('added-date').value = today;
     </script>
+    <script src="search.js"></script>
   </body>
 </html>
