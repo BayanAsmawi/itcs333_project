@@ -76,7 +76,7 @@
               type="text"
               id="upload-course-code"
               name="upload-course-code"
-              placeholder="e.g., ITCC113"
+              placeholder="e.g., ITCS113"
               required
             />
             <div id="filter-group" class="filter-group">
@@ -96,13 +96,13 @@
                 <option value="science">SCIENCE</option>
               </select>
             </div>
-            <input
-              type="file"
-              id="notes-file"
-              name="notes-file"
-              accept=".pdf,.docx,.png,.jpg,.jpeg,.gif"
-              required
-            />
+            <label for="course-notes-title">Notes Title</label>
+            <textarea name="course-notes-title" id="course-notes-title"></textarea>
+            <label for="course-notes-body">Enter your notes content</label>
+            <textarea name="course-notes-body" id="course-notes-body"></textarea>
+
+            <input type="hidden" id="added-date" name="added-date">
+
             <button type="submit">Upload Notes</button>
             <button type="submit">Cancle</button>
             <button type="submit">Edit</button>
@@ -129,12 +129,16 @@
               <div class="commenter-name">Sara Al-Mahmood</div>
               <div class="comment-date">April 6, 2025</div>
           </div>
-          <div class="comment-text">
+          <div class="comment-text"> 
               I found a few errors in the Database Systems review. The section on normalization forms has some incorrect examples. I'll upload a corrected version tomorrow.
           </div>
       </div>
   </div>
   
     <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+    <script>
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('added-date').value = today;
+    </script>
   </body>
 </html>

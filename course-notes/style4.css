@@ -107,7 +107,8 @@ form {
 }
 
 input[type="text"],
-input[type="file"] {
+#course-notes-body,
+#course-notes-title {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
