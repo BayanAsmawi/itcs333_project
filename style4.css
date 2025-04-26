@@ -107,7 +107,8 @@ form {
 }
 
 input[type="text"],
-input[type="file"] {
+#course-notes-body,
+#course-notes-title {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -240,6 +241,16 @@ footer {
   background-color: #f1f1f1;
 }
 
+#back-button {
+  color: #111;
+  border: 1px solid;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 5px;
+  font-style: normal;
+  width: 20%;
+  position: relative;
+}
 /* Comment Section Styles */
 .comments-section {
   background-color: #f5c45e;
@@ -316,3 +327,4 @@ footer {
 .comment-text {
   line-height: 1.5;
 }
+/* End of Comment Section Styles */
