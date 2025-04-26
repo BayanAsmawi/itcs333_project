@@ -21,6 +21,7 @@
                 <option value="Art Club">Art Club</option>
                 <option value="Astrology Club">Astrology Club</option>
                 <option value="Book Club">Book Club</option>
+                <option value="Movie Club">Movie Club</option>
                 <option value="Music Club">Music Club</option>
                 <option value="Robotics Club">Robotics Club</option>
                 <option value="Sports Club">Sports Club</option>
@@ -33,15 +34,18 @@
             <input type="datetime-local" id="datetime" name="datetime" required />
 
             <label for="image">Upload Image:</label>
-            <input type="file" id="image" name="image" />
+            <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/gif, image/webp" />
 
             <div class="form-buttons">
-                 <button><a href="index.html">Cancl</a>e</button>
+                <a href="index.html" class="cancel-btn">Cancel</a>
                 <button type="submit">Add Activity</button>
             </div>
         </form>
     </div>
 
     <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+    
+    <!-- JavaScript files -->
+    <script src="formValidation.js"></script>
 </body>
 </html>
