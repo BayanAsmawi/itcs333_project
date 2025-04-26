@@ -6,6 +6,11 @@ const params = new URLSearchParams(window.location.search);
 const newsId = isNaN(params.get("id")) ? params.get("id") : Number(params.get("id"));
 const detailContainer = document.querySelector("article");
 
+if (!newsId) {
+  alert("Invalid access. Redirecting to home page.");
+  window.location.href = "campus.html";
+}
+
 async function fetchDetail() {
   try {
     detailContainer.innerHTML = "<p>Loading...</p>";
@@ -39,7 +44,7 @@ function renderDetail(newsItem) {
     <p>${newsItem.content}</p>
 
     <div class="my-4">
-      <button class="btn button" style="background-color: rgba(156, 83, 31, 0.699);">Edit</button>
+      <a href="edit.html?id=${newsItem.id}" class="btn button" style="background-color: rgba(156, 83, 31, 0.699);">Edit</a>
       <button class="btn button" style="background-color: rgba(156, 83, 31, 0.699);" onclick="deleteNews('${newsItem.id}')">Delete</button>
       <a href="campus.html" class="btn button" style="background-color: rgba(156, 83, 31, 0.699);">Back to Listing</a>
     </div>
