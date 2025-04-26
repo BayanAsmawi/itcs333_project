@@ -362,13 +362,70 @@ footer {
   color: fff;
   width: 100%;
   justify-content: center;
-}
+ }
 
 .contrast {
   background-color: #a89c29;
-}
+  width: auto;
+  justify-content: center;}
 
 .grid {
-  background-color: #ff9d23;
+  color: #ff9d23;
+}
 
+.loading {
+  color: #111;
+}
+
+#searchInput,
+#filterSelect,
+#sortSelect {
+  background-color: #f5e7b2;
+  border-color: #c14600;
+}
+
+nav {
+  margin-top: 150px;
+}
+
+#groupForm {
+  margin-top: 50px;
+  margin-left: 110px;
+  margin-right: 110px;
+  justify-content: center;
+}
+
+#group-name,
+#subject,
+#meeting-times,
+#members-count,
+#description {
+  background-color: #f5e7b2;
+  border-color: #c14600;
+}
+
+#submitBtn, #newbtn, #commentBtn, #edit-link {
+  background-color: #a89c29;
+  color: #fff;
+  border-color: #111;
+  width: auto;
+}
+
+#cancelBtn, #listingbtn, #delete-button{
+  background-color: #c14600;
+  color: #fff;
+  border-color: #111;
+  width: auto;
+}
+
+#group-detail {
+  background-color: #f5e7b2;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 40px;
+  justify-content: center;
+  border-style:ridge;
+  border-color: #ff9d23;
+  padding: 30px;
+  border-radius: 1%;
 }
