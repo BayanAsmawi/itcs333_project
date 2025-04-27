@@ -1,0 +1,191 @@
+<!-- Fatima S.Moosa jawad - 202008727 - Course Notes -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style4.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <title>Course Notes</title> 
+  </head>
+  <body>
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+    <header>
+      <ul class="nav-bar">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </header>
+    <br />
+    <main>
+      <div class="container">
+        <div class="search-section">
+          <h2 style="font-family: Monaco">Search Course Notes</h2>
+          <form id="search-form">
+            <input
+              type="text"
+              id="course-code"
+              name="course-code"
+              placeholder="Enter Course Code (e.g., ITCS113)"
+              required
+            />
+            <div id="filter-options" class="filter-options">
+              <div id="filter-group" class="filter-group">
+                <label for="college">College</label>
+                <select id="college">
+                  <option value="">All Colleges</option>
+                  <option value="applied_studies">APPLIED STUDIES</option>
+                  <option value="arts">ARTS</option>
+                  <option value="teachers">BAHRAIN TEACHERS COLLEGE</option>
+                  <option value="business">BUSINESS ADMINISTRATION</option>
+                  <option value="engineering">ENGINEERING</option>
+                  <option value="health">
+                    COLLEGE OF HEALTH AND SPORT SCIENCES
+                  </option>
+                  <option value="it">INFORMATION TECHNOLOGY</option>
+                  <option value="law">LAW</option>
+                  <option value="science">SCIENCE</option>
+                </select>
+              </div>
+    
+              <div id="filter-group" class="filter-group">
+                <label for="date">Date Added</label>
+                <select id="date">
+                  <option value="">Anytime</option>
+                  <option value="today">Today</option>
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                  <option value="year">This Year</option>
+                </select>
+              </div>
+            <button type="submit">Search</button>
+            <button type="submit">Clear</button>
+
+          </form>
+        </div>
+
+        <div class="upload-section">
+          <h2 style="font-family: Monaco">Upload Course Notes</h2>
+          <span>Write the course code you want to add notes to: </span>
+          <form id="upload-form" enctype="multipart/form-data">
+            <input
+              type="text"
+              id="upload-course-code"
+              name="upload-course-code"
+              placeholder="e.g., ITCS113"
+              required
+            />
+            <div id="filter-group" class="filter-group">
+              <label for="college">Select College: </label>
+              <select id="college">
+                <option value="">All Colleges</option>
+                <option value="applied_studies">APPLIED STUDIES</option>
+                <option value="arts">ARTS</option>
+                <option value="teachers">BAHRAIN TEACHERS COLLEGE</option>
+                <option value="business">BUSINESS ADMINISTRATION</option>
+                <option value="engineering">ENGINEERING</option>
+                <option value="health">
+                  COLLEGE OF HEALTH AND SPORT SCIENCES
+                </option>
+                <option value="it">INFORMATION TECHNOLOGY</option>
+                <option value="law">LAW</option>
+                <option value="science">SCIENCE</option>
+              </select>
+            </div>
+            <label for="course-notes-title" style="color: #111; font-weight: bold;">Notes Title:</label>
+            <textarea name="course-notes-title" id="course-notes-title" required></textarea>
+            <label for="course-notes-body" style="color: #111; font-weight: bold;">Enter your notes content:</label>
+            <textarea name="course-notes-body" id="course-notes-body" required></textarea>
+
+            <input type="hidden" id="added-date" name="added-date">
+
+            <button type="submit">Upload Notes</button>
+            <button type="submit">Cancle</button>
+            <button type="submit">Edit</button>
+          </form>
+          <div id="upload-status">
+            <!-- Upload status messages will show here -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+      <!-- Comment Section -->
+      <div class="comments-section">
+        <div class="comments-header">Comments</div>
+        
+        <!-- Comment Form -->
+        <form class="comment-form">
+            <input type="text" id="username" placeholder="Write your name" required> 
+            <textarea placeholder="Add your comment..." required></textarea>
+            <button>Post Comment</button>
+        </form>
+        
+        <!-- Initial Sample Comment -->
+        <div class="comment">
+            <div class="comment-header">
+                <div class="commenter-name">Sara Al-Mahmood</div>
+                <div class="comment-date">April 6, 2025</div>
+            </div>
+            <div class="comment-text">
+                I found a few errors in the Database Systems review. The section on normalization forms has some incorrect examples. I'll upload a corrected version tomorrow.
+            </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div id="loading" class="loading">Loading comments...</div>
+        
+        <!-- API Comments will be inserted here -->
+        <div id="api-comments"></div>
+    </div>
+  
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+    <script>
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('added-date').value = today;
+
+      // cancel button functionality
+
+      // Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Get reference to the form and cancel button
+  const uploadForm = document.getElementById('upload-form');
+  const cancelButton = uploadForm.querySelectorAll('button[type="submit"]')[1]; // The cancel button
+  
+  // Fix the button type and typo
+  cancelButton.type = 'button'; // Change from "submit" to "button"
+  cancelButton.textContent = 'Cancel'; // Fix the typo "Cancle" to "Cancel"
+  
+  // Add event listener for the cancel button
+  cancelButton.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent any default behavior
+    
+    // Clear all form fields
+    document.getElementById('upload-course-code').value = '';
+    document.getElementById('college').selectedIndex = 0; // Reset to first option
+    document.getElementById('course-notes-title').value = '';
+    document.getElementById('course-notes-body').value = '';
+    
+    // Optional feedback
+    const uploadStatus = document.getElementById('upload-status');
+    if (uploadStatus) {
+      uploadStatus.textContent = 'Form cleared';
+      
+      // Clear the status message after 2 seconds
+      setTimeout(() => {
+        uploadStatus.textContent = '';
+      }, 2000);
+    }
+  });
+});
+    </script>
+    <script src="search.js"></script>
+    <script src="comments.js">
+    </script>
+    
+  </body>
+</html>
