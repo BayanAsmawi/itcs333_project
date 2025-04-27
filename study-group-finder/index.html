@@ -21,40 +21,45 @@
       </ul>
     </header>
 
-  <main>
-    <section class="sec">Study Group Finder</section>
-    <section class="option">
-      <form id="filters-form">
-        <input id="searchInput" type="text" placeholder="Search study groups..." />
-        <select id="filterSelect"></select>
-        <select id="sortSelect">
-          <option value="">Sort by</option>
-          <option value="member">Least Members</option>
-          <option value="members">Most Members</option>
-          <option value="az">A-Z</option>
-          <option value="za">Z-A</option>
-        </select>
-      </form>
+    <main>
+      <section class="sec">Study Group Finder</section>
+      <section class="option">
+        <form id="filters-form">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search study groups..."
+          />
+          <select id="filterSelect"></select>
+          <select id="sortSelect">
+            <option value="">Sort by</option>
+            <option value="member">Least Members</option>
+            <option value="members">Most Members</option>
+            <option value="az">A-Z</option>
+            <option value="za">Z-A</option>
+          </select>
+        </form>
 
-      <div class="group-list grid"></div>
-      <div class="loading" style="display: none;">Loading groups...</div>
+        <div class="group-list grid"></div>
+        <div class="loading" style="display: none">Loading groups...</div>
 
-      <a href="add-group.html" id="newbtn" role="button">Add New Study Group</a>
+        <a href="add-group.html" id="newbtn" role="button"
+          >Add New Study Group</a
+        >
 
-      <nav>
-        <ul class="pagination"></ul>
-      </nav>
+        <nav>
+          <ul class="pagination"></ul>
+        </nav>
+      </section>
+    </main>
 
-      
-    </section>
-  </main>
+    <footer>
+      <div class="footer">
+        &copy; 2025 Campus Hub | Helping university students connect and succeed
+        together.
+      </div>
+    </footer>
 
-  <footer>
-    <div class="footer">
-      &copy; 2025 Campus Hub | Helping university students connect and succeed together.
-    </div>
-  </footer>
-
-  <script src="main.js"></script>
-</body>
+    <script src="main.js"></script>
+  </body>
 </html>
