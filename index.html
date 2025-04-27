@@ -5,54 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Hub</title>
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
   </head>
   <body>
-    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
-    <header>
-      <ul class="nav-bar">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="about.html">About</a></li>
-        <input class="search" id="search" type="text" placeholder="Search.." />
-      </ul>
-    </header>
-    <br />
+    <div id="searchBar">
+      <input id="mainSearch" type="search" placeholder="Search...">
+    </div>
+    <div>
+      <header class="naviBar">
+        <img id="logo" src="logo.png">
+        <section class="nav-bar">
+          <a id="home" href="index.html">Home</a></li>
+          <a id="contact" href="contact.html">Contact</a></li>
+          <a id="about" href="about.html">About</a></li>
+        </section>
+        <button id="logIn">Sign up/Log in</button>
+      </header>
+    </div>
+    <br>
+
     <section class="sec">Explore The Campus Hub</section>
+
     <main>
-      <div class="container">
+      <div class="modules">
         <div class="box">
-          <a href="./events-Calander/events.html">Events Calendar</a>
+          <a id="mod" href="./events-Calander/events.html">Events Calendar</a>
         </div>
         <div class="box">
-          <a href="./study-group-finder/index.html">Study Group Finder</a>
+          <a id="mod" href="./study-group-finder/index.html">Study Group Finder</a>
         </div>
         <div class="box">
-          <a href="./course-reviews/courseReviews.HTML">Course Reviews</a>
+          <a id="mod" href="./course-reviews/courseReviews.HTML">Course Reviews</a>
         </div>
         <div class="box">
-          <a href="./course-notes/index4.html">Course Notes</a>
+          <a id="mod" href="./course-notes/index4.html">Course Notes</a>
         </div>
         <div class="box">
-          <a href="./campus-news/campus.html">Campus News</a>
+          <a id="mod" href="./campus-news/campus.html">Campus News</a>
         </div>
         <div class="box">
-          <a href="./club-activities/index.html">Club Activities</a>
+          <a id="mod" href="./club-activities/index.html">Club Activities</a>
         </div>
         <div class="box">
-          <a href="./student-marketplace/index.html">Student Marketplace</a>
+          <a id="mod" href="./student-marketplace/index.html">Student Marketplace</a>
         </div>
       </div>
     </main>
 
+    <br>
+
     <footer>
       <div class="footer">
+        <p class="foot">
         &copy; 2025 Campus Hub | All Rights Reserved
         <br />
         Helping university students connect and succeed together.
+        </p>
       </div>
     </footer>
   </body>
