@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Hub</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+  </head>
+  <body>
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+    <header>
+      <ul class="nav-bar">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../about.html">About</a></li>
+        <input class="search" id="search" type="text" placeholder="Search.." />
+      </ul>
+    </header>
+
+  <main>
+    <section class="sec">Study Group Finder</section>
+    <section class="option">
+      <form id="filters-form">
+        <input id="searchInput" type="text" placeholder="Search study groups..." />
+        <select id="filterSelect"></select>
+        <select id="sortSelect">
+          <option value="">Sort by</option>
+          <option value="member">Least Members</option>
+          <option value="members">Most Members</option>
+          <option value="az">A-Z</option>
+          <option value="za">Z-A</option>
+        </select>
+      </form>
+
+      <div class="group-list grid"></div>
+      <div class="loading" style="display: none;">Loading groups...</div>
+
+      <a href="add-group.html" id="newbtn" role="button">Add New Study Group</a>
+
+      <nav>
+        <ul class="pagination"></ul>
+      </nav>
+
+      
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer">
+      &copy; 2025 Campus Hub | Helping university students connect and succeed together.
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

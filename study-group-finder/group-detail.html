@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Details | Campus Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+
+<body>
+  <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+  
+  <header>
+    <ul class="nav-bar">
+      <li><a href="/assets/index.html">Home</a></li>
+      <li><a href="/assets/contact.html">Contact</a></li>
+      <li><a href="/assets/about.html">About</a></li>
+      <input class="search" id="search" type="text" placeholder="Search...">
+    </ul>
+  </header>
+
+  <main>
+    <section>
+      <section class="sec">Study Group Details</section>
+
+      <section id="group-detail">
+        <h2 id="group-name">Loading...</h2>
+        <p><strong>Subject:</strong> <span id="subject">Loading...</span></p>
+        <p><strong>Meeting Times:</strong> <span id="meeting-times">Loading...</span></p>
+        <p><strong>Members:</strong> <span id="members-count">Loading...</span></p>
+        <p><strong>Description:</strong> <span id="description">Loading...</span></p>
+
+        <div class="actions">
+          <a id="edit-link" href="#" class="contrast" role="button">Edit</a>
+          <button id="delete-button" class="secondary">Delete</button>
+        </div>
+
+        <section class="comments">
+          <h3>Comments</h3>
+          <form>
+            <textarea placeholder="Leave a comment..." required></textarea>
+            <button id="commentBtn" type="submit">Post Comment</button>
+          </form>
+          <article id="comm">
+            <p><strong>Jane D:</strong> Excited to join!</p>
+          </article>
+        </section>
+
+        <a href="index.html" id="listingbtn" role="button" class="secondary">Back to Listings</a>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer">
+      &copy; 2025 Campus Hub | Helping university students connect and succeed together.
+    </div>
+  </footer>
+
+  <script src="detail.js"></script>
+</body>
+</html>
