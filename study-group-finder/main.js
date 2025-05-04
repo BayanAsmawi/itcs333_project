@@ -9,7 +9,7 @@ const paginationNav = document.querySelector('.pagination');
 
 let groups = [];
 let currentPage = 1;
-const itemsPerPage = 6;
+const itemsPerPage = 3;
 
 async function fetchGroups() {
   loadingIndicator.style.display = 'block';
@@ -18,7 +18,7 @@ async function fetchGroups() {
     if (!response.ok) throw new Error('Failed to fetch study groups.');
     groups = await response.json();
     renderGroups();
-    populateSubjects();
+    populateCollege();
   } catch (error) {
     groupList.innerHTML = `<p style="color: red;">${error.message}</p>`;
   } finally {
@@ -26,25 +26,25 @@ async function fetchGroups() {
   }
 }
 
-function populateSubjects() {
-  const subjects = [...new Set(groups.map(g => g.subject))].filter(Boolean);
-  filterSelect.innerHTML = '<option value="">All Subjects</option>';
-  subjects.forEach(subject => {
+function populateCollege() {
+  const college = [...new Set(groups.map(g => g.college))].filter(Boolean);
+  filterSelect.innerHTML = '<option value="">Ⴤ</option>';
+  college.forEach(college => {
     const option = document.createElement('option');
-    option.value = subject;
-    option.textContent = subject;
+    option.value = college;
+    option.textContent = college;
     filterSelect.appendChild(option);
   });
 }
 
 function renderGroups() {
   const searchText = searchInput.value.toLowerCase();
-  const filterSubject = filterSelect.value;
+  const filterCollege = filterSelect.value;
   const sortType = sortSelect.value;
 
   let filtered = groups.filter(group => {
     const matchesSearch = group.groupName.toLowerCase().includes(searchText);
-    const matchesFilter = !filterSubject || group.subject === filterSubject;
+    const matchesFilter = !filterCollege || group.college === filterCollege;
     return matchesSearch && matchesFilter;
   });
 
@@ -66,14 +66,14 @@ function renderGroups() {
   groupList.innerHTML = paginated.map(group => `
     <article>
       <h3>${group.groupName}</h3>
-      <p><strong>Subject:</strong> ${group.subject}</p>
+      <p><strong>College:</strong> ${group.college}</p>
       <p><strong>Meeting Times:</strong> ${group.meetingTimes}</p>
       <p><strong>Members:</strong> ${group.membersCount ?? 0}</p>
-      <p>${group.description}</p>
-      <a href="group-detail.html?id=${group.id}" role="button">View Details</a>
+      <p><strong>Description:</strong> ${group.description}</p>
+      <a class="viewBtn" href="group-detail.html?id=${group.id}" role="button">View Details</a>
     </article>
   `).join('');
-
+  
   renderPagination(totalPages);
 }
 

@@ -16,10 +16,10 @@ async function fetchGroupData(id) {
   try {
     const response = await fetch(`${API_URL}/${id}`);
     if (!response.ok) throw new Error('Failed to fetch group data.');
-
+    
     const group = await response.json();
     document.getElementById('group-name').value = group.groupName;
-    document.getElementById('subject').value = group.subject;
+    document.getElementById('college').value = group.college;
     document.getElementById('meeting-times').value = group.meetingTimes;
     document.getElementById('members-count').value = group.membersCount ?? 0;
     document.getElementById('description').value = group.description;
@@ -33,7 +33,7 @@ groupForm.addEventListener('submit', async (e) => {
 
   const newGroup = {
     groupName: document.getElementById('group-name').value.trim(),
-    subject: document.getElementById('subject').value,
+    college: document.getElementById('college').value,
     meetingTimes: document.getElementById('meeting-times').value.trim(),
     membersCount: parseInt(document.getElementById('members-count').value) || 0,
     description: document.getElementById('description').value.trim(),

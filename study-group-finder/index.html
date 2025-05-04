@@ -5,41 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Hub</title>
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
   </head>
   <body>
-    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
-    <header>
-      <ul class="nav-bar">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-        <li><a href="../about.html">About</a></li>
-        <input class="search" id="search" type="text" placeholder="Search.." />
-      </ul>
-    </header>
+    <section class="plate">
+      <header class="naviBar">
+        
+        <div id="logo">
+          <img class="logo" src="../logo.png">
+        </div>
 
+          <input id="mainSearch" type="search" placeholder="Search...">
+        
+          <a id="navigation" href="../index.html">Home</a>
+          <a id="navigation" href="../contact.html">Contact</a>
+          <a id="navigation" href="../about.html">About</a>
+      </header>
+
+    <p id="divider"> </p>
+    <h3 class="sec">Study Group Finder</h3>
+    
   <main>
-    <section class="sec">Study Group Finder</section>
     <section class="option">
       <form id="filters-form">
-        <input id="searchInput" type="text" placeholder="Search study groups..." />
-        <select id="filterSelect"></select>
-        <select id="sortSelect">
-          <option value="">Sort by</option>
+        <input id="searchInput" type="search" placeholder="Search study groups by name..." />
+        <select id="filterSelect" title="filter"></select>
+        <select id="sortSelect" title="Sort">
+          <option value="">⇅</option>
           <option value="member">Least Members</option>
           <option value="members">Most Members</option>
           <option value="az">A-Z</option>
           <option value="za">Z-A</option>
         </select>
+        <a href="add-group.html" id="newbtn" role="button" title="Add new group">+</a>
       </form>
 
       <div class="group-list grid"></div>
       <div class="loading" style="display: none;">Loading groups...</div>
-
-      <a href="add-group.html" id="newbtn" role="button">Add New Study Group</a>
 
       <nav>
         <ul class="pagination"></ul>
@@ -47,13 +49,16 @@
 
       
     </section>
-  </main>
+    </main>
+    </section>
 
-  <footer>
-    <div class="footer">
-      &copy; 2025 Campus Hub | Helping university students connect and succeed together.
-    </div>
-  </footer>
+    <section id="footer">
+      <footer>
+        <p class="foot">
+          &copy; 2025 Campus Hub | All Rights Reserved
+          </p>
+      </footer>
+    </section>
 
   <script src="main.js"></script>
 </body>
