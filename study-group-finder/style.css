@@ -31,7 +31,6 @@ body {
   border-radius: 2em;
   padding: 60px;
   margin-top: 2%;
-  margin-bottom: 2%;
   width: 85%;
   justify-content: space-evenly;
   box-shadow: #C8AAAA;
@@ -58,6 +57,11 @@ body {
   background-color: transparent;
   border-color: #574964;
   font-size: x-small;
+}
+
+#mainSearch::placeholder {
+  color: #574964;
+  opacity: 0.7;
 }
 
 #navigation {
@@ -106,10 +110,17 @@ body {
 }
 
 #searchInput {
+  color: #574964;
   width: 78%;
 }
 
+#searchInput::placeholder {
+  color: #574964;
+  opacity: 0.7;
+}
+
 #filterSelect, #sortSelect {
+  color: #574964;
   width: 7.8%;
 }
 
@@ -127,19 +138,25 @@ body {
   background-color: #574964;
   box-shadow: 0 2px 4px #00000080;
   transition: transform 0.2s, box-shadow 0.2s;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 #filters-form #newbtn:hover {
   background-color: #FFDAB3;
   color: #574964;
   border-color: #FFDAB3;
-  transform: scale(1.05);
+  transform: scale(1.02);
   animation-timing-function: linear;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 
 .group-list.grid article {
-  display:grid;
+  display:inline-grid;
   padding: 1.5em;
   margin-bottom: 6.5%;
   background-color: #9f83836d;
@@ -151,7 +168,7 @@ body {
 
 .group-list.grid article:hover {
   background-color: #ffdab384;
-  transform: scale(1.05);
+  transform: scale(1.02);
   animation-timing-function: linear;
 }
 
@@ -172,8 +189,51 @@ body {
 
 .group-list.grid article .viewBtn:hover {
   background-color: #574964;
-  transform: scale(1.05);
+  transform: scale(1.02);
   animation-timing-function: linear;
+}
+
+nav {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  padding: 0;
+  margin-top: 2em;
+  width: 100%;
+}
+
+.pagination button {
+  padding: 0.4em 0.8em; 
+  margin: 0;
+  min-width: 2em;
+  color: #574964;
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 2em;
+}
+
+.pagination button:hover {
+  background-color: #ffdab3a4;
+  color: #574964;
+  border-color: transparent;
+  transform: scale(1.02);
+  animation-timing-function: linear;
+}
+
+.pagination .contrast {
+  color: #FFDAB3;
+  background-color: #574964;
+  border-color: transparent;
+  box-shadow: 0 2px 4px #00000080;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #footer {
@@ -182,4 +242,8 @@ body {
   margin: auto;
   color: #574964;
   position:flex;
+}
+
+.foot {
+  color: #574964;
 }
