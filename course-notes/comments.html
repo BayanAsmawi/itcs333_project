@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style4.css" />
+    <title>Comments Application</title>
+  </head>
+  <body>
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+    <header>
+      <ul class="nav-bar">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </header>
+    <main>
+      <div class="container">
+        <!-- Add Comment Form -->
+        <div>
+          <h2>Add a Comment</h2>
+          <form id="comment-form">
+            <div>
+              <label for="username">Username:</label>
+              <input type="text" id="username" name="username" required />
+            </div>
+            <div>
+              <label for="comment">Comment:</label>
+              <textarea
+                id="comment"
+                name="comment"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+            <div>
+              <button type="submit">Submit Comment</button>
+            </div>
+            <div>
+              <p style="text-align: center">
+                <a href="add-note.html" class="general-link">Add New Note</a>
+                <a href="index4.html" class="general-link">Back to Search</a>
+              </p>
+            </div>
+          </form>
+          <div id="message"></div>
+        </div>
+      </div>
+      <div class="results-container" style="margin-top: 20px">
+        <!-- Comments Display -->
+        <div>
+          <h2>Comments</h2>
+          <div id="comments-container">Loading comments...</div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+
+    <script>
+      // API endpoint
+      const apiUrl =
+        "https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/comments.php";
+
+      // Function to load comments
+      function loadComments() {
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            const commentsContainer =
+              document.getElementById("comments-container");
+
+            if (data.status === "success") {
+              if (data.count === 0) {
+                commentsContainer.innerHTML =
+                  "<p>No comments yet. Be the first to comment!</p>";
+              } else {
+                let commentsHtml = "";
+
+                data.data.forEach((comment) => {
+                  const date = new Date(comment.comment_date).toLocaleString();
+
+                  commentsHtml += `
+                                    <div>
+                                        <h3>${comment.username}</h3>
+                                        <p>${comment.comment_text}</p>
+                                        <small class="meta-data">Posted on: ${date}</small>
+                                        <hr>
+                                    </div>
+                                `;
+                });
+
+                commentsContainer.innerHTML = commentsHtml;
+              }
+            } else {
+              commentsContainer.innerHTML =
+                "<p>Error loading comments: " + data.message + "</p>";
+            }
+          })
+          .catch((error) => {
+            document.getElementById("comments-container").innerHTML =
+              "<p>Error loading comments. Please try again later.</p>";
+            console.error("Error:", error);
+          });
+      }
+
+      // Function to add a new comment
+      function addComment(username, commentText) {
+        fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            comment_text: commentText,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const messageElement = document.getElementById("message");
+
+            if (data.status === "success") {
+              messageElement.innerHTML = "<p>" + data.message + "</p>";
+              document.getElementById("comment-form").reset();
+
+              // Reload comments to show the new one
+              loadComments();
+            } else {
+              messageElement.innerHTML = "<p>Error: " + data.message + "</p>";
+            }
+          })
+          .catch((error) => {
+            document.getElementById("message").innerHTML =
+              "<p>Error submitting comment. Please try again later.</p>";
+            console.error("Error:", error);
+          });
+      }
+
+      // Handle form submission
+      document
+        .getElementById("comment-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const commentText = document.getElementById("comment").value.trim();
+
+          if (username && commentText) {
+            addComment(username, commentText);
+          }
+        });
+
+      // Load comments when the page loads
+      document.addEventListener("DOMContentLoaded", loadComments);
+    </script>
+  </body>
+</html>

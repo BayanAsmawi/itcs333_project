@@ -1,15 +1,14 @@
-<!-- Fatima S.Moosa jawad - 202008727 - Course Notes -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style4.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
-    <title>Course Notes</title> 
+    <link rel="stylesheet" href="style4.css" />
+    <title>Campus Hub | Course Notes</title>
   </head>
   <body>
     <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
@@ -20,172 +19,238 @@
         <li><a href="../about.html">About</a></li>
       </ul>
     </header>
-    <br />
+
     <main>
       <div class="container">
-        <div class="search-section">
-          <h2 style="font-family: Monaco">Search Course Notes</h2>
-          <form id="search-form">
+        <h2>Search Notes</h2>
+        <form id="searchForm">
+          <div class="form-field">
+            <label for="courseCode">Course Code:</label>
             <input
               type="text"
-              id="course-code"
-              name="course-code"
-              placeholder="Enter Course Code (e.g., ITCS113)"
-              required
+              id="courseCode"
+              name="courseCode"
+              placeholder="e.g. CS101"
             />
-            <div id="filter-options" class="filter-options">
-              <div id="filter-group" class="filter-group">
-                <label for="college">College</label>
-                <select id="college">
-                  <option value="">All Colleges</option>
-                  <option value="applied_studies">APPLIED STUDIES</option>
-                  <option value="arts">ARTS</option>
-                  <option value="teachers">BAHRAIN TEACHERS COLLEGE</option>
-                  <option value="business">BUSINESS ADMINISTRATION</option>
-                  <option value="engineering">ENGINEERING</option>
-                  <option value="health">
-                    COLLEGE OF HEALTH AND SPORT SCIENCES
-                  </option>
-                  <option value="it">INFORMATION TECHNOLOGY</option>
-                  <option value="law">LAW</option>
-                  <option value="science">SCIENCE</option>
-                </select>
-              </div>
-    
-              <div id="filter-group" class="filter-group">
-                <label for="date">Date Added</label>
-                <select id="date">
-                  <option value="">Anytime</option>
-                  <option value="today">Today</option>
-                  <option value="week">This Week</option>
-                  <option value="month">This Month</option>
-                  <option value="year">This Year</option>
-                </select>
-              </div>
-            <button type="submit">Search</button>
-            <button type="submit">Clear</button>
-
-          </form>
-        </div>
-
-        <div class="upload-section">
-          <h2 style="font-family: Monaco">Upload Course Notes</h2>
-          <span>Write the course code you want to add notes to: </span>
-          <form id="upload-form" enctype="multipart/form-data">
-            <input
-              type="text"
-              id="upload-course-code"
-              name="upload-course-code"
-              placeholder="e.g., ITCS113"
-              required
-            />
-            <div id="filter-group" class="filter-group">
-              <label for="college">Select College: </label>
-              <select id="college">
-                <option value="">All Colleges</option>
-                <option value="applied_studies">APPLIED STUDIES</option>
-                <option value="arts">ARTS</option>
-                <option value="teachers">BAHRAIN TEACHERS COLLEGE</option>
-                <option value="business">BUSINESS ADMINISTRATION</option>
-                <option value="engineering">ENGINEERING</option>
-                <option value="health">
-                  COLLEGE OF HEALTH AND SPORT SCIENCES
-                </option>
-                <option value="it">INFORMATION TECHNOLOGY</option>
-                <option value="law">LAW</option>
-                <option value="science">SCIENCE</option>
-              </select>
-            </div>
-            <label for="course-notes-title" style="color: #111; font-weight: bold;">Notes Title:</label>
-            <textarea name="course-notes-title" id="course-notes-title" required></textarea>
-            <label for="course-notes-body" style="color: #111; font-weight: bold;">Enter your notes content:</label>
-            <textarea name="course-notes-body" id="course-notes-body" required></textarea>
-
-            <input type="hidden" id="added-date" name="added-date">
-
-            <button type="submit">Upload Notes</button>
-            <button type="submit">Cancle</button>
-            <button type="submit">Edit</button>
-          </form>
-          <div id="upload-status">
-            <!-- Upload status messages will show here -->
           </div>
-        </div>
+          <div class="form-field">
+            <label for="college">College:</label>
+            <input
+              type="text"
+              id="college"
+              name="college"
+              placeholder="e.g. Engineering"
+            />
+          </div>
+
+          <button type="submit">Search</button>
+          <button type="button" id="resetButton">Reset</button>
+        </form>
+        <p style="text-align: center">
+          <a href="add-note.html" class="general-link">Add New Note</a>
+          <a href="comments.html" class="general-link">Go to Comments</a>
+        </p>
       </div>
     </main>
 
-      <!-- Comment Section -->
-      <div class="comments-section">
-        <div class="comments-header">Comments</div>
-        
-        <!-- Comment Form -->
-        <form class="comment-form">
-            <input type="text" id="username" placeholder="Write your name" required> 
-            <textarea placeholder="Add your comment..." required></textarea>
-            <button>Post Comment</button>
-        </form>
-        
-        <!-- Initial Sample Comment -->
-        <div class="comment">
-            <div class="comment-header">
-                <div class="commenter-name">Sara Al-Mahmood</div>
-                <div class="comment-date">April 6, 2025</div>
-            </div>
-            <div class="comment-text">
-                I found a few errors in the Database Systems review. The section on normalization forms has some incorrect examples. I'll upload a corrected version tomorrow.
-            </div>
-        </div>
-        
-        <!-- Loading indicator -->
-        <div id="loading" class="loading">Loading comments...</div>
-        
-        <!-- API Comments will be inserted here -->
-        <div id="api-comments"></div>
+    <div class="results-container">
+      <h2>Results</h2>
+      <div id="loading" style="display: none">Loading...</div>
+      <div id="errorMessage"></div>
+      <div id="resultsCount"></div>
+      <div id="resultsContainer"></div>
     </div>
-  
+
     <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+
     <script>
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('added-date').value = today;
+      // DOM Elements
+      const searchForm = document.getElementById("searchForm");
+      const courseCodeInput = document.getElementById("courseCode");
+      const collegeInput = document.getElementById("college");
+      const resetButton = document.getElementById("resetButton");
+      const loadingIndicator = document.getElementById("loading");
+      const errorMessage = document.getElementById("errorMessage");
+      const resultsCount = document.getElementById("resultsCount");
+      const resultsContainer = document.getElementById("resultsContainer");
 
-      // cancel button functionality
+      // Event Listeners
+      searchForm.addEventListener("submit", handleSearch);
+      resetButton.addEventListener("click", resetForm);
 
-      // Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Get reference to the form and cancel button
-  const uploadForm = document.getElementById('upload-form');
-  const cancelButton = uploadForm.querySelectorAll('button[type="submit"]')[1]; // The cancel button
-  
-  // Fix the button type and typo
-  cancelButton.type = 'button'; // Change from "submit" to "button"
-  cancelButton.textContent = 'Cancel'; // Fix the typo "Cancle" to "Cancel"
-  
-  // Add event listener for the cancel button
-  cancelButton.addEventListener('click', function(e) {
-    e.preventDefault(); // Prevent any default behavior
-    
-    // Clear all form fields
-    document.getElementById('upload-course-code').value = '';
-    document.getElementById('college').selectedIndex = 0; // Reset to first option
-    document.getElementById('course-notes-title').value = '';
-    document.getElementById('course-notes-body').value = '';
-    
-    // Optional feedback
-    const uploadStatus = document.getElementById('upload-status');
-    if (uploadStatus) {
-      uploadStatus.textContent = 'Form cleared';
-      
-      // Clear the status message after 2 seconds
-      setTimeout(() => {
-        uploadStatus.textContent = '';
-      }, 2000);
-    }
-  });
-});
+      // Function to handle form submission
+      function handleSearch(event) {
+        event.preventDefault();
+
+        // Get form values
+        const courseCode = courseCodeInput.value.trim();
+        const college = collegeInput.value.trim();
+
+        // Show loading indicator
+        loadingIndicator.style.display = "block";
+        errorMessage.textContent = "";
+        resultsCount.textContent = "";
+        resultsContainer.innerHTML = "";
+
+        // Build the query string
+        let queryParams = [];
+        if (courseCode) {
+          queryParams.push(`course_code=${encodeURIComponent(courseCode)}`);
+        }
+        if (college) {
+          queryParams.push(`college=${encodeURIComponent(college)}`);
+        }
+
+        const queryString =
+          queryParams.length > 0 ? "?" + queryParams.join("&") : "";
+
+        // Make API request
+        fetch(
+          `https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/api.php${queryString}`
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Hide loading indicator
+            loadingIndicator.style.display = "none";
+
+            // Display results count
+            if (data.status === "success") {
+              resultsCount.textContent = `Found ${data.count} note(s)`;
+
+              // Display results
+              if (data.count > 0) {
+                displayResults(data.data);
+              } else {
+                resultsContainer.innerHTML =
+                  "<p>No notes found matching your criteria.</p>";
+              }
+            } else {
+              throw new Error(data.message || "Unknown error occurred");
+            }
+          })
+          .catch((error) => {
+            // Hide loading indicator
+            loadingIndicator.style.display = "none";
+
+            // Display error message
+            errorMessage.textContent = `Error: ${error.message}`;
+          });
+      }
+
+      // Function to display results
+      function displayResults(notes) {
+        resultsContainer.innerHTML = "";
+
+        // Create table for results
+        const table = document.createElement("table");
+        table.setAttribute("border", "1");
+
+        // Create table header
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+
+        const headers = [
+          "ID",
+          "Course Code",
+          "College",
+          "Date Added",
+          "Title",
+          "Actions",
+        ];
+        headers.forEach((headerText) => {
+          const th = document.createElement("th");
+          th.textContent = headerText;
+          headerRow.appendChild(th);
+        });
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement("tbody");
+
+        notes.forEach((note) => {
+          const row = document.createElement("tr");
+
+          // Add cells for each property
+          const idCell = document.createElement("td");
+          idCell.textContent = note.id;
+          row.appendChild(idCell);
+
+          const courseCodeCell = document.createElement("td");
+          courseCodeCell.textContent = note.course_code;
+          row.appendChild(courseCodeCell);
+
+          const collegeCell = document.createElement("td");
+          collegeCell.textContent = note.college;
+          row.appendChild(collegeCell);
+
+          const dateCell = document.createElement("td");
+          dateCell.textContent = note.date_added;
+          row.appendChild(dateCell);
+
+          const titleCell = document.createElement("td");
+          titleCell.textContent = note.notes_title;
+          row.appendChild(titleCell);
+
+          // Add view button
+          const actionsCell = document.createElement("td");
+          const viewButton = document.createElement("button");
+          viewButton.textContent = "View Notes";
+          viewButton.addEventListener("click", () => viewNoteDetails(note));
+          actionsCell.appendChild(viewButton);
+          row.appendChild(actionsCell);
+
+          tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        resultsContainer.appendChild(table);
+      }
+
+      // Function to view note details
+      function viewNoteDetails(note) {
+        // Create modal-like display for the note
+        resultsContainer.innerHTML = "";
+
+        const detailsDiv = document.createElement("div");
+
+        // Add back button
+        const backButton = document.createElement("button");
+        backButton.textContent = "Back to Results";
+        backButton.addEventListener("click", () =>
+          handleSearch(new Event("submit"))
+        );
+        detailsDiv.appendChild(backButton);
+
+        // Add note details
+        const title = document.createElement("h3");
+        title.textContent = note.notes_title;
+        detailsDiv.appendChild(title);
+
+        const metadata = document.createElement("p");
+        metadata.innerHTML = `<strong>Course:</strong> ${note.course_code} | <strong>College:</strong> ${note.college} | <strong>Date:</strong> ${note.date_added}`;
+        detailsDiv.appendChild(metadata);
+
+        const content = document.createElement("div");
+        content.innerHTML = "<h4>Notes:</h4><p>" + note.notes_body + "</p>";
+        detailsDiv.appendChild(content);
+
+        resultsContainer.appendChild(detailsDiv);
+      }
+
+      // Function to reset the form
+      function resetForm() {
+        searchForm.reset();
+        errorMessage.textContent = "";
+        resultsCount.textContent = "";
+        resultsContainer.innerHTML = "";
+      }
     </script>
-    <script src="search.js"></script>
-    <script src="comments.js">
-    </script>
-    
   </body>
 </html>
