@@ -20,8 +20,14 @@ async function initApp() {
     showLoading(true);
     
     try {
-        // Fetch club activities data
-        allActivities = await fetchActivities();
+        // Check for locally stored activities
+        const localActivities = JSON.parse(localStorage.getItem('campusHubActivities') || '[]');
+        
+        // Fetch club activities data from API
+        const fetchedActivities = await fetchActivities();
+        
+        // Combine local and fetched activities
+        allActivities = [...localActivities, ...fetchedActivities];
         
         // Render activities
         renderActivities();

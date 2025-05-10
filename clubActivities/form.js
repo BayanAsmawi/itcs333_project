@@ -59,36 +59,68 @@ function handleFormSubmit(e) {
         // Show loading state
         showSubmitLoading(true);
         
-        // Simulate form submission (since we don't have a real backend)
-        setTimeout(() => {
-            // Create new activity object
-            const newActivity = {
-                title: titleInput.value,
-                club: clubSelect.value,
-                content: contentTextarea.value,
-                dateTime: formatDateTime(datetimeInput.value),
-                image: imageInput.files.length ? URL.createObjectURL(imageInput.files[0]) : null
+        // Get current timestamp for id
+        const newId = Date.now();
+        
+        // Create a mock image path based on club if no image is provided
+        let imagePath = null;
+        if (imageInput.files.length) {
+            // In a real app, we would upload the file to a server
+            // For now, we'll use a data URL, but this won't persist between page loads
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const activities = JSON.parse(localStorage.getItem('campusHubActivities') || '[]');
+                // Find and update the activity we just added with the image data
+                const activityIndex = activities.findIndex(a => a.id === newId);
+                if (activityIndex >= 0) {
+                    activities[activityIndex].image = e.target.result;
+                    localStorage.setItem('campusHubActivities', JSON.stringify(activities));
+                }
             };
-            
-            // Store in localStorage (for demonstration purposes)
-            const activities = JSON.parse(localStorage.getItem('campusHubActivities') || '[]');
-            activities.push(newActivity);
-            localStorage.setItem('campusHubActivities', JSON.stringify(activities));
-            
-            // Hide loading state
-            showSubmitLoading(false);
-            
-            // Show success message
-            showSubmitSuccess('Activity added successfully!');
-            
-            // Reset form
-            e.target.reset();
-            
-            // Redirect back to index page after a short delay
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-        }, 1500);
+            reader.readAsDataURL(imageInput.files[0]);
+        } else {
+            // Use default image based on club
+            const imageMap = {
+                'Art Club': 'img/art-club.jpg',
+                'Astrology Club': 'img/astorology-club.jpg',
+                'Book Club': 'img/book-club.jpg',
+                'Movie Club': 'img/movie-club.jpg',
+                'Music Club': 'img/music-club.jpg',
+                'Robotics Club': 'img/rocotics-club.jpg',
+                'Sports Club': 'img/sports-club.jpg'
+            };
+            imagePath = imageMap[clubSelect.value] || 'img/placeholder.jpg';
+        }
+        
+        // Create new activity object
+        const newActivity = {
+            id: newId,
+            title: titleInput.value,
+            club: clubSelect.value,
+            content: contentTextarea.value,
+            dateTime: formatDateTime(datetimeInput.value),
+            image: imagePath
+        };
+        
+        // Store in localStorage
+        const activities = JSON.parse(localStorage.getItem('campusHubActivities') || '[]');
+        activities.push(newActivity);
+        localStorage.setItem('campusHubActivities', JSON.stringify(activities));
+        
+        // Hide loading state
+        showSubmitLoading(false);
+        
+        // Show success message
+        showSubmitSuccess('Activity added successfully!');
+        
+        // Reset form
+        e.target.reset();
+        
+        // Alert user before redirecting
+        alert('Activity successfully created! Redirecting to the activities page.');
+        
+        // Redirect immediately to index page
+        window.location.href = 'index.html';
     } else {
         // Show error message
         showValidationErrorMessage('Please fix the errors in the form before submitting.');
