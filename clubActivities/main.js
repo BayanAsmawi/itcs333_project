@@ -116,24 +116,33 @@ async function fetchActivities() {
             const date = futureDate.getDate();
             const year = futureDate.getFullYear();
             
+            // Generate random username
+            const names = ['John Doe', 'Sarah Smith', 'Alex Chen', 'Maria Garcia', 'David Kim', 'Emma Watson', 'Michael Brown'];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            
             // Get a relevant image based on club type
             const imageMap = {
                 'Art Club': 'img/art-club.jpg',
-                'Astrology Club': 'img/astorology-club.jpg',
+                'Astrology Club': 'img/astrology-club.jpg',
                 'Book Club': 'img/book-club.jpg',
                 'Movie Club': 'img/movie-club.jpg',
                 'Music Club': 'img/music-club.jpg',
-                'Robotics Club': 'img/rocotics-club.jpg',
+                'Robotics Club': 'img/robotics-club.jpg',
                 'Sports Club': 'img/sports-club.jpg'
             };
+            
+            // Generate random comment count
+            const commentCount = Math.floor(Math.random() * 20);
             
             return {
                 id: post.id,
                 title: post.title.split(' ').slice(0, 3).join(' '),
                 club: randomClub,
-                content: post.body.split('.')[0],
+                username: randomName,
+                content: post.body.split('.')[0] + '.',
                 image: imageMap[randomClub] || 'img/placeholder.jpg',
-                dateTime: `${month} ${date}, ${year} – ${hours}:${minutes} ${ampm}`
+                dateTime: `${month} ${date}, ${year} - ${hours}:${minutes} ${ampm}`,
+                commentCount: commentCount
             };
         });
     } catch (error) {
@@ -150,9 +159,13 @@ function renderActivities() {
     
     // Remove existing activities, keeping pagination
     const pagination = container.querySelector('.pagination');
-    container.innerHTML = '';
-    if (pagination) {
-        container.appendChild(pagination);
+    
+    // Remove all child elements except pagination
+    while (container.firstChild) {
+        if (container.firstChild.classList && container.firstChild.classList.contains('pagination')) {
+            break;
+        }
+        container.removeChild(container.firstChild);
     }
     
     // Filter activities
@@ -189,45 +202,54 @@ function renderActivities() {
         return;
     }
     
-    // Create and append activity boxes
+    // Create and append activity cards
     activitiesToShow.forEach(activity => {
-        const box = createActivityBox(activity);
-        container.insertBefore(box, pagination);
+        const card = createActivityCard(activity);
+        container.insertBefore(card, pagination);
     });
 }
 
-// Create an activity box element
-function createActivityBox(activity) {
-    const box = document.createElement('div');
-    box.className = 'box';
-    box.dataset.id = activity.id;
+// Create an activity card element
+function createActivityCard(activity) {
+    const card = document.createElement('div');
+    card.className = 'activity-card';
+    card.dataset.id = activity.id;
     
-    box.innerHTML = `
-        <div class="box-header">
-            <h6>${activity.title}</h6>
-            <p>${activity.club}</p>
+    card.innerHTML = `
+        <div class="card-image">
+            <img src="${activity.image}" alt="${activity.title}">
         </div>
-        <p>${activity.content}</p>
-        <img src="${activity.image}" alt="${activity.title}">
-        <p>${activity.dateTime}</p>
-        <button class="comments-btn">Comments</button>
+        <div class="card-content">
+            <div class="card-header">
+                <div>
+                    <p class="username">${activity.username}</p>
+                    <p class="club-name">${activity.club}</p>
+                </div>
+            </div>
+            <h3 class="activity-title">${activity.title}</h3>
+            <p class="activity-content">${activity.content}</p>
+            <p class="activity-datetime">${activity.dateTime}</p>
+            <div class="card-footer">
+                <button class="comments-btn">Comments (${activity.commentCount})</button>
+            </div>
+        </div>
     `;
     
     // Add click event to show activity details
-    box.addEventListener('click', (e) => {
+    card.addEventListener('click', (e) => {
         if (!e.target.classList.contains('comments-btn')) {
             showActivityDetails(activity);
         }
     });
     
     // Add click event for comments button
-    const commentsBtn = box.querySelector('.comments-btn');
+    const commentsBtn = card.querySelector('.comments-btn');
     commentsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         showComments(activity.id);
     });
     
-    return box;
+    return card;
 }
 
 // Show activity details
@@ -241,10 +263,12 @@ function showActivityDetails(activity) {
             <span class="close">&times;</span>
             <div class="activity-details">
                 <h2>${activity.title}</h2>
+                <p class="username">${activity.username}</p>
                 <p class="club-name">${activity.club}</p>
                 <img src="${activity.image}" alt="${activity.title}">
                 <p class="activity-description">${activity.content}</p>
                 <p class="activity-datetime">${activity.dateTime}</p>
+                <button class="comments-btn">View Comments (${activity.commentCount})</button>
             </div>
         </div>
     `;
@@ -261,6 +285,13 @@ function showActivityDetails(activity) {
         if (e.target === modal) {
             document.body.removeChild(modal);
         }
+    });
+    
+    // Add event listener for comments button in modal
+    const commentsBtn = modal.querySelector('.comments-btn');
+    commentsBtn.addEventListener('click', () => {
+        document.body.removeChild(modal);
+        showComments(activity.id);
     });
     
     // Prevent scrolling when modal is open
@@ -473,15 +504,15 @@ function sortActivities(activities, sortOption) {
         case 'Newest':
             // Sort by date (newest first)
             return [...activities].sort((a, b) => {
-                const dateA = new Date(a.dateTime.split('–')[0].trim());
-                const dateB = new Date(b.dateTime.split('–')[0].trim());
+                const dateA = new Date(a.dateTime.split('-')[0].trim());
+                const dateB = new Date(b.dateTime.split('-')[0].trim());
                 return dateB - dateA;
             });
         case 'Oldest':
             // Sort by date (oldest first)
             return [...activities].sort((a, b) => {
-                const dateA = new Date(a.dateTime.split('–')[0].trim());
-                const dateB = new Date(b.dateTime.split('–')[0].trim());
+                const dateA = new Date(a.dateTime.split('-')[0].trim());
+                const dateB = new Date(b.dateTime.split('-')[0].trim());
                 return dateA - dateB;
             });
         default:
@@ -491,7 +522,21 @@ function sortActivities(activities, sortOption) {
 
 // Show loading state
 function showLoading(isLoading) {
-    // Remove existing loader if any
+    // Handle loading placeholder in the activities container
+    const container = document.querySelector('.club-activities-container');
+    const loadingPlaceholder = container.querySelector('.loading-placeholder');
+    
+    if (isLoading) {
+        if (loadingPlaceholder) {
+            loadingPlaceholder.style.display = 'block';
+        }
+    } else {
+        if (loadingPlaceholder) {
+            loadingPlaceholder.style.display = 'none';
+        }
+    }
+    
+    // Handle full-page loader
     const existingLoader = document.querySelector('.loader-container');
     if (existingLoader) {
         document.body.removeChild(existingLoader);
