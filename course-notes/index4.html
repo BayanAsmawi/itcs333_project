@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style4.css" />
+    <title>Campus Hub | Course Notes</title>
+  </head>
+  <body>
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+    <header>
+      <ul class="nav-bar">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </header>
+
+    <main>
+      <div class="container">
+        <h2>Search Notes</h2>
+        <form id="searchForm">
+          <div class="form-field">
+            <label for="courseCode">Course Code:</label>
+            <input
+              type="text"
+              id="courseCode"
+              name="courseCode"
+              placeholder="e.g. CS101"
+            />
+          </div>
+          <div class="form-field">
+            <label for="college">College:</label>
+            <input
+              type="text"
+              id="college"
+              name="college"
+              placeholder="e.g. Engineering"
+            />
+          </div>
+
+          <button type="submit">Search</button>
+          <button type="button" id="resetButton">Reset</button>
+        </form>
+        <p style="text-align: center">
+          <a href="add-note.html" class="general-link">Add New Note</a>
+          <a href="comments.html" class="general-link">Go to Comments</a>
+        </p>
+      </div>
+    </main>
+
+    <div class="results-container">
+      <h2>Results</h2>
+      <div id="loading" style="display: none">Loading...</div>
+      <div id="errorMessage"></div>
+      <div id="resultsCount"></div>
+      <div id="resultsContainer"></div>
+    </div>
+
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+
+    <script>
+      // DOM Elements
+      const searchForm = document.getElementById("searchForm");
+      const courseCodeInput = document.getElementById("courseCode");
+      const collegeInput = document.getElementById("college");
+      const resetButton = document.getElementById("resetButton");
+      const loadingIndicator = document.getElementById("loading");
+      const errorMessage = document.getElementById("errorMessage");
+      const resultsCount = document.getElementById("resultsCount");
+      const resultsContainer = document.getElementById("resultsContainer");
+
+      // Event Listeners
+      searchForm.addEventListener("submit", handleSearch);
+      resetButton.addEventListener("click", resetForm);
+
+      // Function to handle form submission
+      function handleSearch(event) {
+        event.preventDefault();
+
+        // Get form values
+        const courseCode = courseCodeInput.value.trim();
+        const college = collegeInput.value.trim();
+
+        // Show loading indicator
+        loadingIndicator.style.display = "block";
+        errorMessage.textContent = "";
+        resultsCount.textContent = "";
+        resultsContainer.innerHTML = "";
+
+        // Build the query string
+        let queryParams = [];
+        if (courseCode) {
+          queryParams.push(`course_code=${encodeURIComponent(courseCode)}`);
+        }
+        if (college) {
+          queryParams.push(`college=${encodeURIComponent(college)}`);
+        }
+
+        const queryString =
+          queryParams.length > 0 ? "?" + queryParams.join("&") : "";
+
+        // Make API request
+        fetch(
+          `https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/api.php${queryString}`
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Hide loading indicator
+            loadingIndicator.style.display = "none";
+
+            // Display results count
+            if (data.status === "success") {
+              resultsCount.textContent = `Found ${data.count} note(s)`;
+
+              // Display results
+              if (data.count > 0) {
+                displayResults(data.data);
+              } else {
+                resultsContainer.innerHTML =
+                  "<p>No notes found matching your criteria.</p>";
+              }
+            } else {
+              throw new Error(data.message || "Unknown error occurred");
+            }
+          })
+          .catch((error) => {
+            // Hide loading indicator
+            loadingIndicator.style.display = "none";
+
+            // Display error message
+            errorMessage.textContent = `Error: ${error.message}`;
+          });
+      }
+
+      // Function to display results
+      function displayResults(notes) {
+        resultsContainer.innerHTML = "";
+
+        // Create table for results
+        const table = document.createElement("table");
+        table.setAttribute("border", "1");
+
+        // Create table header
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+
+        const headers = [
+          "ID",
+          "Course Code",
+          "College",
+          "Date Added",
+          "Title",
+          "Actions",
+        ];
+        headers.forEach((headerText) => {
+          const th = document.createElement("th");
+          th.textContent = headerText;
+          headerRow.appendChild(th);
+        });
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement("tbody");
+
+        notes.forEach((note) => {
+          const row = document.createElement("tr");
+
+          // Add cells for each property
+          const idCell = document.createElement("td");
+          idCell.textContent = note.id;
+          row.appendChild(idCell);
+
+          const courseCodeCell = document.createElement("td");
+          courseCodeCell.textContent = note.course_code;
+          row.appendChild(courseCodeCell);
+
+          const collegeCell = document.createElement("td");
+          collegeCell.textContent = note.college;
+          row.appendChild(collegeCell);
+
+          const dateCell = document.createElement("td");
+          dateCell.textContent = note.date_added;
+          row.appendChild(dateCell);
+
+          const titleCell = document.createElement("td");
+          titleCell.textContent = note.notes_title;
+          row.appendChild(titleCell);
+
+          // Add view button
+          const actionsCell = document.createElement("td");
+          const viewButton = document.createElement("button");
+          viewButton.textContent = "View Notes";
+          viewButton.addEventListener("click", () => viewNoteDetails(note));
+          actionsCell.appendChild(viewButton);
+          row.appendChild(actionsCell);
+
+          tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        resultsContainer.appendChild(table);
+      }
+
+      // Function to view note details
+      function viewNoteDetails(note) {
+        // Create modal-like display for the note
+        resultsContainer.innerHTML = "";
+
+        const detailsDiv = document.createElement("div");
+
+        // Add back button
+        const backButton = document.createElement("button");
+        backButton.textContent = "Back to Results";
+        backButton.addEventListener("click", () =>
+          handleSearch(new Event("submit"))
+        );
+        detailsDiv.appendChild(backButton);
+
+        // Add note details
+        const title = document.createElement("h3");
+        title.textContent = note.notes_title;
+        detailsDiv.appendChild(title);
+
+        const metadata = document.createElement("p");
+        metadata.innerHTML = `<strong>Course:</strong> ${note.course_code} | <strong>College:</strong> ${note.college} | <strong>Date:</strong> ${note.date_added}`;
+        detailsDiv.appendChild(metadata);
+
+        const content = document.createElement("div");
+        content.innerHTML = "<h4>Notes:</h4><p>" + note.notes_body + "</p>";
+        detailsDiv.appendChild(content);
+
+        resultsContainer.appendChild(detailsDiv);
+      }
+
+      // Function to reset the form
+      function resetForm() {
+        searchForm.reset();
+        errorMessage.textContent = "";
+        resultsCount.textContent = "";
+        resultsContainer.innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

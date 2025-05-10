@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style4.css" />
+    <title>Campus Hub | Add Course Notes</title>
+  </head>
+  <body>
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+    <header>
+      <ul class="nav-bar">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </header>
+    <main>
+      <div class="container">
+        <h2>Add New Course Notes</h2>
+
+        <div id="messageArea"></div>
+
+        <form id="addNoteForm">
+          <div>
+            <label for="courseCode">Course Code:</label>
+            <input type="text" id="courseCode" name="courseCode" required />
+          </div>
+
+          <div>
+            <label for="college">College:</label>
+            <input type="text" id="college" name="college" required />
+          </div>
+
+          <div>
+            <label for="notesTitle">Notes Title:</label>
+            <input type="text" id="notesTitle" name="notesTitle" required />
+          </div>
+
+          <div>
+            <label for="notesBody">Notes Body:</label>
+            <textarea
+              id="notesBody"
+              name="notesBody"
+              rows="10"
+              cols="50"
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <button type="submit">Add Notes</button>
+            <button type="reset">Clear Form</button>
+          </div>
+        </form>
+
+        <p style="text-align: center">
+          <a href="index4.html" class="general-link">Back to Search</a>
+          <a href="comments.html" class="general-link">Go to Comments</a>
+        </p>
+      </div>
+    </main>
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+    <script>
+      // DOM Elements
+      const addNoteForm = document.getElementById("addNoteForm");
+      const messageArea = document.getElementById("messageArea");
+
+      // Event Listeners
+      addNoteForm.addEventListener("submit", handleSubmit);
+
+      // Function to handle form submission
+      function handleSubmit(event) {
+        event.preventDefault();
+
+        // Get form values
+        const courseCode = document.getElementById("courseCode").value.trim();
+        const college = document.getElementById("college").value.trim();
+        const notesTitle = document.getElementById("notesTitle").value.trim();
+        const notesBody = document.getElementById("notesBody").value.trim();
+
+        // Validate form data
+        if (!courseCode || !college || !notesTitle || !notesBody) {
+          showMessage("Please fill in all fields", "error");
+          return;
+        }
+
+        // Prepare the data
+        const noteData = {
+          course_code: courseCode,
+          college: college,
+          notes_title: notesTitle,
+          notes_body: notesBody,
+        };
+
+        // Show loading message
+        showMessage("Saving notes...", "info");
+
+        // Send the data to the API
+        fetch(
+          "https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/api.php",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(noteData),
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.status === "success") {
+              // Show success message
+              showMessage("Notes added successfully!", "success");
+              // Reset the form
+              addNoteForm.reset();
+            } else {
+              throw new Error(data.message || "Failed to add notes");
+            }
+          })
+          .catch((error) => {
+            // Show error message
+            showMessage(`Error: ${error.message}`, "error");
+          });
+      }
+
+      // Function to display messages
+      function showMessage(message, type) {
+        messageArea.innerHTML = "";
+
+        const messageElement = document.createElement("div");
+        messageElement.textContent = message;
+
+        // Add basic styling based on message type
+        if (type === "error") {
+          messageElement.style.color = "red";
+        } else if (type === "success") {
+          messageElement.style.color = "green";
+        } else {
+          messageElement.style.color = "blue";
+        }
+
+        messageArea.appendChild(messageElement);
+      }
+    </script>
+  </body>
+</html>
