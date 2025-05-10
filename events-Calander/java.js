@@ -4,8 +4,10 @@ const eventForm = document.getElementById('event-form');
 const searchInput = document.getElementById('search');
 const sortSelect = document.getElementById('sort-by');
 const formError = document.getElementById('form-error');
+const submitButton = document.querySelector('#event-form button[type="submit"]');
 
 let events = []; // This will hold all events (dummy + created)
+let currentEditId = null; // To track which event is being edited
 
 document.getElementById('searchEvents').addEventListener('input', function(e) {
   const query = e.target.value.toLowerCase();
@@ -102,6 +104,13 @@ function validateForm(title, date, location, description) {
     return true;
 }
 
+// Reset form to add mode
+function resetForm() {
+    eventForm.reset();
+    currentEditId = null;
+    submitButton.textContent = "Add Event";
+}
+
 // ==================== Event Handlers ====================
 
 // Handle form submit
@@ -117,18 +126,35 @@ eventForm.addEventListener('submit', function (e) {
         return;
     }
 
-    const newEvent = {
-        id: generateId(),
+    const eventData = {
         title,
         date,
         location,
         description
     };
 
-    events.push(newEvent);
+    let successMessage = '';
+    
+    if (currentEditId) {
+        // Update existing event
+        eventData.id = currentEditId;
+        events.push(eventData);
+        successMessage = `Event "${title}" has been updated successfully!`;
+        currentEditId = null;
+        submitButton.textContent = "Add Event";
+    } else {
+        // Add new event
+        eventData.id = generateId();
+        events.push(eventData);
+        successMessage = `Event "${title}" has been added successfully!`;
+    }
+
     saveEvents();
     renderEvents();
     eventForm.reset();
+    
+    // Show success popup
+    alert(successMessage);
 });
 
 // Handle event delete
@@ -137,22 +163,37 @@ function deleteEvent(id) {
         events = events.filter(event => event.id !== id);
         saveEvents();
         renderEvents();
+        
+        // If the deleted event was being edited, reset the form
+        if (currentEditId === id) {
+            resetForm();
+        }
     }
 }
 
 // Handle event edit
 function editEvent(id) {
-    const event = events.find(e => e.id === id);
-    if (event) {
-        document.getElementById('title').value = event.title;
-        document.getElementById('date').value = event.date;
-        document.getElementById('location').value = event.location;
-        document.getElementById('description').value = event.description;
+    if (confirm('Are you sure you want to edit this event?')) {
+        const event = events.find(e => e.id === id);
+        if (event) {
+            // Set form to edit mode
+            currentEditId = id;
+            submitButton.textContent = "Update Event";
+            
+            // Populate form fields
+            document.getElementById('title').value = event.title;
+            document.getElementById('date').value = event.date;
+            document.getElementById('location').value = event.location;
+            document.getElementById('description').value = event.description;
 
-        // Remove the old event to replace it after editing
-        events = events.filter(e => e.id !== id);
-        saveEvents();
-        renderEvents();
+            // Remove the event temporarily while editing
+            events = events.filter(e => e.id !== id);
+            saveEvents();
+            renderEvents();
+            
+            // Scroll to form
+            eventForm.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 }
 
@@ -177,6 +218,11 @@ sortSelect.addEventListener('change', function () {
     }
 
     renderEvents();
+});
+
+// Add a cancel edit button event listener
+document.getElementById('cancel-edit')?.addEventListener('click', function() {
+    resetForm();
 });
 
 // ==================== Initialization ====================

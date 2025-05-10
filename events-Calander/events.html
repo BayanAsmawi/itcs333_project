@@ -73,6 +73,10 @@
       .error {
         color: red;
       }
+      .form-buttons {
+        display: flex;
+        gap: 10px;
+      }
     </style>
   </head>
   <body>
@@ -113,7 +117,10 @@
             required
           ></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Add Event</button>
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-primary">Add Event</button>
+          <button type="button" id="cancel-edit" class="btn btn-secondary">Cancel Edit</button>
+        </div>
         <p id="form-error" class="error"></p>
       </form>
 
@@ -146,6 +153,6 @@
       <p>&copy; 2025 Campus Hub | All Rights Reserved</p>
     </footer>
 
-    <script src="events.js"></script>
+    <script src="java.js"></script>
   </body>
 </html>
