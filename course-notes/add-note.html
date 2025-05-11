@@ -66,30 +66,26 @@
     </main>
     <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
     <script>
-      // DOM Elements
+      // DOM
       const addNoteForm = document.getElementById("addNoteForm");
       const messageArea = document.getElementById("messageArea");
 
-      // Event Listeners
       addNoteForm.addEventListener("submit", handleSubmit);
 
-      // Function to handle form submission
+      // form submission
       function handleSubmit(event) {
         event.preventDefault();
 
-        // Get form values
         const courseCode = document.getElementById("courseCode").value.trim();
         const college = document.getElementById("college").value.trim();
         const notesTitle = document.getElementById("notesTitle").value.trim();
         const notesBody = document.getElementById("notesBody").value.trim();
 
-        // Validate form data
         if (!courseCode || !college || !notesTitle || !notesBody) {
           showMessage("Please fill in all fields", "error");
           return;
         }
 
-        // Prepare the data
         const noteData = {
           course_code: courseCode,
           college: college,
@@ -97,10 +93,9 @@
           notes_body: notesBody,
         };
 
-        // Show loading message
         showMessage("Saving notes...", "info");
 
-        // Send the data to the API
+        // API
         fetch(
           "https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/api.php",
           {
@@ -119,28 +114,25 @@
           })
           .then((data) => {
             if (data.status === "success") {
-              // Show success message
               showMessage("Notes added successfully!", "success");
-              // Reset the form
+
               addNoteForm.reset();
             } else {
               throw new Error(data.message || "Failed to add notes");
             }
           })
           .catch((error) => {
-            // Show error message
+            // error message
             showMessage(`Error: ${error.message}`, "error");
           });
       }
 
-      // Function to display messages
       function showMessage(message, type) {
         messageArea.innerHTML = "";
 
         const messageElement = document.createElement("div");
         messageElement.textContent = message;
 
-        // Add basic styling based on message type
         if (type === "error") {
           messageElement.style.color = "red";
         } else if (type === "success") {

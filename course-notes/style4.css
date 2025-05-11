@@ -23,6 +23,10 @@ h2 {
   font-family: Monaco;
 }
 
+hr {
+  border-color: #e0a75e;
+}
+
 /* Navigation bar */
 .nav-bar {
   margin-bottom: 0px;
@@ -214,4 +218,44 @@ h4 {
   border-radius: 20px;
   background-color: #c2b85d;
   padding: 20px;
+}
+
+/* Note Detail */
+
+.note-content-body {
+  color: #333;
+  background-color: #f9f9f9; /* Light background for the note body */
+  border: 1px solid #ddd; /* Subtle border */
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 10px;
+  white-space: pre-wrap; /* Preserve whitespace and newlines from the note body */
+}
+.back-button-container {
+  margin-bottom: 20px;
+}
+
+/* pagination styles */
+.pagination-controls {
+  text-align: center;
+  margin-top: 20px;
+}
+.pagination-controls button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #eee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pagination-controls button:disabled {
+  background-color: rgb(83, 177, 209);
+  cursor: not-allowed;
+}
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+.pagination-controls span {
+  color: #333;
 }

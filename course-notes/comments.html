@@ -21,7 +21,6 @@
     </header>
     <main>
       <div class="container">
-        <!-- Add Comment Form -->
         <div>
           <h2>Add a Comment</h2>
           <form id="comment-form">
@@ -52,10 +51,10 @@
         </div>
       </div>
       <div class="results-container" style="margin-top: 20px">
-        <!-- Comments Display -->
         <div>
           <h2>Comments</h2>
           <div id="comments-container">Loading comments...</div>
+          <div id="pagination-controls" class="pagination-controls"></div>
         </div>
       </div>
     </main>
@@ -67,50 +66,127 @@
       const apiUrl =
         "https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/comments.php";
 
-      // Function to load comments
+      let allComments = [];
+      let currentPage = 1;
+      const commentsPerPage = 4;
+
+      function displayCommentsPage() {
+        const commentsContainer = document.getElementById("comments-container");
+        commentsContainer.innerHTML = "";
+
+        if (allComments.length === 0) {
+          commentsContainer.innerHTML =
+            "<p>No comments yet. Be the first to comment!</p>";
+          renderPaginationControls();
+          return;
+        }
+
+        const startIndex = (currentPage - 1) * commentsPerPage;
+        const endIndex = startIndex + commentsPerPage;
+        const commentsToDisplay = allComments.slice(startIndex, endIndex);
+
+        let commentsHtml = "";
+        commentsToDisplay.forEach((comment) => {
+          const date = new Date(comment.comment_date).toLocaleString();
+          commentsHtml += `
+            <div>
+                <h3>${comment.username}</h3>
+                <p>${comment.comment_text}</p>
+                <small class="meta-data">Posted on: ${date}</small>
+                <hr>
+            </div>
+          `;
+        });
+        commentsContainer.innerHTML = commentsHtml;
+        renderPaginationControls();
+      }
+
+      function renderPaginationControls() {
+        const paginationControlsContainer = document.getElementById(
+          "pagination-controls"
+        );
+        paginationControlsContainer.innerHTML = "";
+
+        if (allComments.length === 0) return;
+
+        const totalPages = Math.ceil(allComments.length / commentsPerPage);
+
+        if (totalPages <= 1) return;
+
+        // Previous Button
+        const prevButton = document.createElement("button");
+        prevButton.textContent = "Previous";
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage--;
+            displayCommentsPage();
+          }
+        });
+        paginationControlsContainer.appendChild(prevButton);
+
+        // Page Numbers
+        const pageInfo = document.createElement("span");
+        pageInfo.textContent = ` Page ${currentPage} of ${totalPages} `;
+        pageInfo.style.margin = "0 10px";
+        paginationControlsContainer.appendChild(pageInfo);
+
+        // Next Button
+        const nextButton = document.createElement("button");
+        nextButton.textContent = "Next";
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            displayCommentsPage();
+          }
+        });
+        paginationControlsContainer.appendChild(nextButton);
+      }
+
+      // load comments
       function loadComments() {
+        const commentsContainer = document.getElementById("comments-container");
+        commentsContainer.innerHTML = "Loading comments..."; // Show loading message
+
         fetch(apiUrl)
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
           .then((data) => {
-            const commentsContainer =
-              document.getElementById("comments-container");
-
             if (data.status === "success") {
-              if (data.count === 0) {
-                commentsContainer.innerHTML =
-                  "<p>No comments yet. Be the first to comment!</p>";
-              } else {
-                let commentsHtml = "";
-
-                data.data.forEach((comment) => {
-                  const date = new Date(comment.comment_date).toLocaleString();
-
-                  commentsHtml += `
-                                    <div>
-                                        <h3>${comment.username}</h3>
-                                        <p>${comment.comment_text}</p>
-                                        <small class="meta-data">Posted on: ${date}</small>
-                                        <hr>
-                                    </div>
-                                `;
-                });
-
-                commentsContainer.innerHTML = commentsHtml;
-              }
+              allComments = data.data || [];
+              allComments.sort(
+                (a, b) => new Date(b.comment_date) - new Date(a.comment_date)
+              );
+              currentPage = 1;
+              displayCommentsPage();
             } else {
               commentsContainer.innerHTML =
-                "<p>Error loading comments: " + data.message + "</p>";
+                "<p>Error loading comments: " +
+                (data.message || "Unknown error") +
+                "</p>";
+              allComments = [];
+              renderPaginationControls();
             }
           })
           .catch((error) => {
-            document.getElementById("comments-container").innerHTML =
+            commentsContainer.innerHTML =
               "<p>Error loading comments. Please try again later.</p>";
-            console.error("Error:", error);
+            console.error("Error fetching comments:", error);
+            allComments = [];
+            renderPaginationControls();
           });
       }
 
-      // Function to add a new comment
+      // add a new comment
       function addComment(username, commentText) {
+        const messageElement = document.getElementById("message");
+        messageElement.innerHTML = "<p>Submitting comment...</p>";
+
         fetch(apiUrl, {
           method: "POST",
           headers: {
@@ -121,28 +197,43 @@
             comment_text: commentText,
           }),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) {
+              // error message
+              return response
+                .json()
+                .then((errData) => {
+                  throw new Error(
+                    errData.message || `HTTP error! status: ${response.status}`
+                  );
+                })
+                .catch(() => {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.json();
+          })
           .then((data) => {
-            const messageElement = document.getElementById("message");
-
             if (data.status === "success") {
               messageElement.innerHTML = "<p>" + data.message + "</p>";
               document.getElementById("comment-form").reset();
 
-              // Reload comments to show the new one
               loadComments();
             } else {
-              messageElement.innerHTML = "<p>Error: " + data.message + "</p>";
+              messageElement.innerHTML =
+                "<p>Error: " +
+                (data.message || "Failed to post comment") +
+                "</p>";
             }
           })
           .catch((error) => {
-            document.getElementById("message").innerHTML =
+            messageElement.innerHTML =
               "<p>Error submitting comment. Please try again later.</p>";
-            console.error("Error:", error);
+            console.error("Error adding comment:", error);
           });
       }
 
-      // Handle form submission
+      //form submission
       document
         .getElementById("comment-form")
         .addEventListener("submit", function (event) {
@@ -153,10 +244,12 @@
 
           if (username && commentText) {
             addComment(username, commentText);
+          } else {
+            document.getElementById("message").innerHTML =
+              "<p>Please enter both username and comment.</p>";
           }
         });
 
-      // Load comments when the page loads
       document.addEventListener("DOMContentLoaded", loadComments);
     </script>
   </body>

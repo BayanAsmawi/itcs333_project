@@ -30,7 +30,7 @@
               type="text"
               id="courseCode"
               name="courseCode"
-              placeholder="e.g. CS101"
+              placeholder="e.g. CS250"
             />
           </div>
           <div class="form-field">
@@ -39,7 +39,7 @@
               type="text"
               id="college"
               name="college"
-              placeholder="e.g. Engineering"
+              placeholder="e.g. Information Technology"
             />
           </div>
 
@@ -64,7 +64,7 @@
     <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
 
     <script>
-      // DOM Elements
+      // DOM
       const searchForm = document.getElementById("searchForm");
       const courseCodeInput = document.getElementById("courseCode");
       const collegeInput = document.getElementById("college");
@@ -74,25 +74,21 @@
       const resultsCount = document.getElementById("resultsCount");
       const resultsContainer = document.getElementById("resultsContainer");
 
-      // Event Listeners
       searchForm.addEventListener("submit", handleSearch);
       resetButton.addEventListener("click", resetForm);
 
-      // Function to handle form submission
+      // form submission
       function handleSearch(event) {
         event.preventDefault();
 
-        // Get form values
         const courseCode = courseCodeInput.value.trim();
         const college = collegeInput.value.trim();
 
-        // Show loading indicator
         loadingIndicator.style.display = "block";
         errorMessage.textContent = "";
         resultsCount.textContent = "";
         resultsContainer.innerHTML = "";
 
-        // Build the query string
         let queryParams = [];
         if (courseCode) {
           queryParams.push(`course_code=${encodeURIComponent(courseCode)}`);
@@ -104,7 +100,7 @@
         const queryString =
           queryParams.length > 0 ? "?" + queryParams.join("&") : "";
 
-        // Make API request
+        // API request
         fetch(
           `https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/api.php${queryString}`
         )
@@ -115,14 +111,12 @@
             return response.json();
           })
           .then((data) => {
-            // Hide loading indicator
             loadingIndicator.style.display = "none";
 
-            // Display results count
+            // results count
             if (data.status === "success") {
               resultsCount.textContent = `Found ${data.count} note(s)`;
 
-              // Display results
               if (data.count > 0) {
                 displayResults(data.data);
               } else {
@@ -134,23 +128,19 @@
             }
           })
           .catch((error) => {
-            // Hide loading indicator
             loadingIndicator.style.display = "none";
 
-            // Display error message
             errorMessage.textContent = `Error: ${error.message}`;
           });
       }
 
-      // Function to display results
+      // displaying results
       function displayResults(notes) {
         resultsContainer.innerHTML = "";
 
-        // Create table for results
         const table = document.createElement("table");
         table.setAttribute("border", "1");
 
-        // Create table header
         const thead = document.createElement("thead");
         const headerRow = document.createElement("tr");
 
@@ -171,13 +161,12 @@
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
-        // Create table body
+        // table body
         const tbody = document.createElement("tbody");
 
         notes.forEach((note) => {
           const row = document.createElement("tr");
 
-          // Add cells for each property
           const idCell = document.createElement("td");
           idCell.textContent = note.id;
           row.appendChild(idCell);
@@ -198,10 +187,10 @@
           titleCell.textContent = note.notes_title;
           row.appendChild(titleCell);
 
-          // Add view button
           const actionsCell = document.createElement("td");
           const viewButton = document.createElement("button");
           viewButton.textContent = "View Notes";
+
           viewButton.addEventListener("click", () => viewNoteDetails(note));
           actionsCell.appendChild(viewButton);
           row.appendChild(actionsCell);
@@ -213,38 +202,13 @@
         resultsContainer.appendChild(table);
       }
 
-      // Function to view note details
+      // view note details
       function viewNoteDetails(note) {
-        // Create modal-like display for the note
-        resultsContainer.innerHTML = "";
+        localStorage.setItem("selectedNote", JSON.stringify(note));
 
-        const detailsDiv = document.createElement("div");
-
-        // Add back button
-        const backButton = document.createElement("button");
-        backButton.textContent = "Back to Results";
-        backButton.addEventListener("click", () =>
-          handleSearch(new Event("submit"))
-        );
-        detailsDiv.appendChild(backButton);
-
-        // Add note details
-        const title = document.createElement("h3");
-        title.textContent = note.notes_title;
-        detailsDiv.appendChild(title);
-
-        const metadata = document.createElement("p");
-        metadata.innerHTML = `<strong>Course:</strong> ${note.course_code} | <strong>College:</strong> ${note.college} | <strong>Date:</strong> ${note.date_added}`;
-        detailsDiv.appendChild(metadata);
-
-        const content = document.createElement("div");
-        content.innerHTML = "<h4>Notes:</h4><p>" + note.notes_body + "</p>";
-        detailsDiv.appendChild(content);
-
-        resultsContainer.appendChild(detailsDiv);
+        window.location.href = "note-detail.html";
       }
 
-      // Function to reset the form
       function resetForm() {
         searchForm.reset();
         errorMessage.textContent = "";
