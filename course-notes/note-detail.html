@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style4.css" />
+    <title>Note Details | Campus Hub</title>
+  </head>
+  <body>
+    <h1 style="color: #493628; font-family: Papyrus">Campus Hub</h1>
+    <header>
+      <ul class="nav-bar">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </header>
+
+    <main>
+      <div class="container">
+        <h2>Note Details</h2>
+        <div id="noteDetailContent" class="results-container">
+          <p>Loading note details...</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">&copy; 2025 Campus Hub | All Rights Reserved</footer>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const noteDetailContent = document.getElementById("noteDetailContent");
+        const noteDataString = localStorage.getItem("selectedNote");
+
+        if (noteDataString) {
+          const note = JSON.parse(noteDataString);
+
+          noteDetailContent.innerHTML = "";
+
+          const backButtonContainer = document.createElement("div");
+          backButtonContainer.classList.add("back-button-container");
+
+          const backButton = document.createElement("button");
+          backButton.textContent = "Back to Search Results";
+          backButton.addEventListener("click", () => {
+            window.location.href = "index4.html";
+          });
+          backButtonContainer.appendChild(backButton);
+          noteDetailContent.appendChild(backButtonContainer);
+
+          const titleElement = document.createElement("h3");
+          titleElement.textContent = note.notes_title;
+          noteDetailContent.appendChild(titleElement);
+
+          const metadataElement = document.createElement("p");
+          metadataElement.classList.add("meta-data");
+          metadataElement.innerHTML = `<strong>Course:</strong> ${note.course_code} | <strong>College:</strong> ${note.college} | <strong>Date Added:</strong> ${note.date_added}`;
+          noteDetailContent.appendChild(metadataElement);
+
+          const contentHeaderElement = document.createElement("h4");
+          contentHeaderElement.textContent = "Notes:";
+          noteDetailContent.appendChild(contentHeaderElement);
+
+          const contentBodyElement = document.createElement("div");
+          contentBodyElement.classList.add("note-content-body");
+
+          contentBodyElement.innerHTML = note.notes_body;
+          noteDetailContent.appendChild(contentBodyElement);
+        } else {
+          noteDetailContent.innerHTML =
+            '<p>No note details found. Please <a href="index4.html">go back to search</a> and select a note.</p>';
+        }
+      });
+    </script>
+  </body>
+</html>
