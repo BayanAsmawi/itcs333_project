@@ -4,14 +4,31 @@ const titleInput = document.getElementById("title");
 const dateInput = document.getElementById("date");
 const contentInput = document.getElementById("content");
 
-function loadNewsData() {
-  const localNews = JSON.parse(localStorage.getItem("newsData") || "[]");
-  const newsItem = localNews.find(item => item.id == newsId);
+async function loadNewsData() {
+  let localNews = JSON.parse(localStorage.getItem("newsData") || "[]");
+  let newsItem = localNews.find(item => item.id == newsId);
 
   if (!newsItem) {
-    alert("News item not found!");
-    window.location.href = "campus.html";
-    return;
+    try {
+      const response = await fetch("https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/Api.php"); 
+      //const response = await fetch('news.json');
+      const newsData = await response.json();
+      newsItem = newsData.find(item => item.id == newsId);
+
+      if (!newsItem) {
+        alert("News item not found!");
+        window.location.href = "campus.html";
+        return;
+      }
+
+      localNews.push(newsItem);
+      localStorage.setItem("newsData", JSON.stringify(localNews));
+    } catch (error) {
+      alert("Error fetching data from JSON file!");
+      console.error(error);
+      window.location.href = "campus.html";
+      return;
+    }
   }
 
   titleInput.value = newsItem.title;
@@ -50,5 +67,4 @@ function saveNewsData(e) {
 }
 
 loadNewsData();
-
 document.getElementById("editForm").addEventListener("submit", saveNewsData);
