@@ -1,4 +1,4 @@
-// formValidation.js - Form validation for adding club activities
+// form.js - Form validation and submission for adding club activities
 document.addEventListener('DOMContentLoaded', () => {
     // Get the form element
     const activityForm = document.querySelector('.activity-form');
@@ -32,18 +32,20 @@ function initFormValidation() {
 
 // Setup button handlers
 function setupButtonHandlers() {
-    // Add button - just validates the form but doesn't submit
+    // Add button - validates the form and submits if valid
     const addButton = document.getElementById('add-activity-btn');
     if (addButton) {
         addButton.addEventListener('click', () => {
-            validateAllFields();
+            if (validateAllFields()) {
+                submitForm();
+            }
         });
     }
     
     // Cancel button already has href="index.html" so it will work correctly
 }
 
-// Validate all fields without submission
+// Validate all fields and return if valid
 function validateAllFields() {
     // Get form elements
     const titleInput = document.getElementById('title');
@@ -59,12 +61,74 @@ function validateAllFields() {
     const isDateTimeValid = validateField(datetimeInput, validateDateTime);
     const isImageValid = validateField(imageInput, validateImage);
     
-    // Check if all fields are valid and show appropriate message
+    // Check if all fields are valid
     if (isTitleValid && isClubValid && isContentValid && isDateTimeValid && isImageValid) {
-        showSubmitSuccess('Form validation successful! (This button does nothing as requested)');
+        return true;
     } else {
         // Show error message
         showValidationErrorMessage('Please fix the errors in the form before proceeding.');
+        return false;
+    }
+}
+
+// Submit the form data to the API
+async function submitForm() {
+    // Get form data
+    const form = document.querySelector('.activity-form');
+    const formData = new FormData(form);
+    
+    // Format the datetime value (ISO string)
+    const datetime = formData.get('datetime');
+    
+    // Create data object
+    const data = {
+        title: formData.get('title'),
+        club: formData.get('club'),
+        content: formData.get('content'),
+        datetime: datetime,
+        image_url: 'img/default-activity.jpg' // Default image if none provided
+    };
+    
+    // Show loading message
+    showSubmitMessage('Submitting activity...', 'loading');
+    
+    try {
+        // Send the data to the API
+        const API_URL = 'https://c648da09-844c-4195-ace2-0efe90b02c44-00-5cq8jfmscezu.sisko.replit.dev/api.php';
+        const response = await fetch(`${API_URL}?action=createActivity`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        // Parse response
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+            // Show success message
+            showSubmitMessage('Activity added successfully!', 'success');
+            
+            // Reset form
+            form.reset();
+            
+            // Redirect to main page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } else {
+            // Show error message
+            showSubmitMessage(`Error: ${result.message || 'Unknown error'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showSubmitMessage(`Error: ${error.message || 'Failed to connect to server'}`, 'error');
     }
 }
 
@@ -206,8 +270,8 @@ function formatDateTime(dateTimeString) {
     return `${month} ${day}, ${year} – ${hours}:${minutes} ${ampm}`;
 }
 
-// Show success message after form validation
-function showSubmitSuccess(message) {
+// Show submission message (success, error, or loading)
+function showSubmitMessage(message, type) {
     // Remove existing submission status
     const existingStatus = document.querySelector('.form-submission-status');
     if (existingStatus) {
@@ -215,18 +279,24 @@ function showSubmitSuccess(message) {
     }
     
     const statusContainer = document.createElement('div');
-    statusContainer.className = 'form-submission-status success';
+    statusContainer.className = `form-submission-status ${type}`;
     statusContainer.innerHTML = `<span>${message}</span>`;
+    
+    if (type === 'loading') {
+        statusContainer.innerHTML += '<div class="loading-spinner"></div>';
+    }
     
     const formButtons = document.querySelector('.form-buttons');
     formButtons.parentElement.insertBefore(statusContainer, formButtons);
     
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (document.body.contains(statusContainer)) {
-            statusContainer.parentElement.removeChild(statusContainer);
-        }
-    }, 3000);
+    // Auto-remove after 3 seconds if success or error
+    if (type === 'success' || type === 'error') {
+        setTimeout(() => {
+            if (document.body.contains(statusContainer)) {
+                statusContainer.parentElement.removeChild(statusContainer);
+            }
+        }, 3000);
+    }
 }
 
 // Show validation error message

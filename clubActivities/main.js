@@ -1,629 +1,392 @@
-// main.js - Main JavaScript file for Campus Hub
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the application
-    initApp();
-});
+/**
+ * Club Activities JavaScript - API Integration
+ * 
+ * This file contains the modified JavaScript code for the club activities application
+ * that fetches data from the PHP API instead of using dummy data.
+ */
 
-// Global variables
-let allActivities = [];
+// Constants
+const API_URL = 'https://c648da09-844c-4195-ace2-0efe90b02c44-00-5cq8jfmscezu.sisko.replit.dev/api.php';
+
+// State variables
 let currentPage = 1;
-const activitiesPerPage = 6;
-let currentFilter = 'All Clubs';
+let currentLimit = 6; // Number of activities per page
+let currentSearch = '';
+let currentClub = 'All Clubs';
 let currentSort = 'Newest';
 
-// Initialize the application
-async function initApp() {
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Show loading state
-    showLoading(true);
-    
-    try {
-        // Fetch club activities data
-        allActivities = await fetchActivities();
-        
-        // Render activities
-        renderActivities();
-        
-        // Initialize pagination
-        initPagination();
-    } catch (error) {
-        showError('Failed to load activities. Please try again later.');
-        console.error('Error initializing app:', error);
-    } finally {
-        // Hide loading state
-        showLoading(false);
-    }
-}
-
-// Setup event listeners
-function setupEventListeners() {
-    // Club filter
-    const clubList = document.querySelector('.all-clubs-container ul');
-    if (clubList) {
-        clubList.addEventListener('click', (e) => {
-            if (e.target.tagName === 'LI') {
-                // Remove active class from all items
-                clubList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-                
-                // Add active class to clicked item
-                e.target.classList.add('active');
-                
-                // Set filter
-                currentFilter = e.target.textContent;
-                currentPage = 1;
-                
-                // Filter and render activities
-                renderActivities();
-                initPagination();
-            }
-        });
-    }
-    
-    // View/Sort selector
-    const viewSelect = document.getElementById('view');
-    if (viewSelect) {
-        viewSelect.addEventListener('change', () => {
-            currentSort = viewSelect.value;
-            currentPage = 1;
-            renderActivities();
-            initPagination();
-        });
-    }
-    
-    // Search functionality
-    const searchInput = document.getElementById('search');
-    if (searchInput) {
-        searchInput.addEventListener('input', debounce(() => {
-            currentPage = 1;
-            renderActivities();
-            initPagination();
-        }, 300));
-    }
-}
-
-// Fetch activities from API
+/**
+ * Fetch activities from the API
+ */
 async function fetchActivities() {
     try {
-        // Use JSONPlaceholder as a mock API
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=20');
+        // Build URL with parameters
+        const params = new URLSearchParams();
+        params.append('action', 'getActivities');
         
+        if (currentSearch) params.append('search', currentSearch);
+        if (currentClub !== 'All Clubs') params.append('club', currentClub);
+        params.append('sort', currentSort.toLowerCase());
+        params.append('page', currentPage);
+        params.append('limit', currentLimit);
+        
+        const url = `${API_URL}?${params.toString()}`;
+        
+        // Show loading message or indicator (using your existing styles)
+        const loadingMessage = document.createElement('div');
+        loadingMessage.className = 'loading-message';
+        loadingMessage.textContent = 'Loading activities...';
+        document.querySelector('.club-activities-container').appendChild(loadingMessage);
+        
+        // Fetch data
+        const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error('Network response was not ok');
         }
         
-        const posts = await response.json();
+        const data = await response.json();
         
-        // Transform the data to match our activities format
-        return posts.map(post => {
-            // Generate random club
-            const clubs = ['Art Club', 'Astrology Club', 'Book Club', 'Movie Club', 'Music Club', 'Robotics Club', 'Sports Club'];
-            const randomClub = clubs[Math.floor(Math.random() * clubs.length)];
-            
-            // Generate random date within next month
-            const today = new Date();
-            const futureDate = new Date(today);
-            futureDate.setDate(today.getDate() + Math.floor(Math.random() * 30) + 1);
-            
-            // Generate random time
-            const hours = Math.floor(Math.random() * 12) + 1;
-            const minutes = Math.random() > 0.5 ? '00' : '30';
-            const ampm = Math.random() > 0.5 ? 'AM' : 'PM';
-            
-            // Format date
-            const month = futureDate.toLocaleString('default', { month: 'short' });
-            const date = futureDate.getDate();
-            const year = futureDate.getFullYear();
-            
-            // Generate random username
-            const names = ['John Doe', 'Sarah Smith', 'Alex Chen', 'Maria Garcia', 'David Kim', 'Emma Watson', 'Michael Brown'];
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            
-            // Get a relevant image based on club type
-            const imageMap = {
-                'Art Club': 'img/art-club.jpg',
-                'Astrology Club': 'img/astrology-club.jpg',
-                'Book Club': 'img/book-club.jpg',
-                'Movie Club': 'img/movie-club.jpg',
-                'Music Club': 'img/music-club.jpg',
-                'Robotics Club': 'img/robotics-club.jpg',
-                'Sports Club': 'img/sports-club.jpg'
-            };
-            
-            // Generate random comment count
-            const commentCount = Math.floor(Math.random() * 20);
-            
-            return {
-                id: post.id,
-                title: post.title.split(' ').slice(0, 3).join(' '),
-                club: randomClub,
-                username: randomName,
-                content: post.body.split('.')[0] + '.',
-                image: imageMap[randomClub] || 'img/placeholder.jpg',
-                dateTime: `${month} ${date}, ${year} - ${hours}:${minutes} ${ampm}`,
-                commentCount: commentCount
-            };
-        });
+        // Remove loading message
+        loadingMessage.remove();
+        
+        if (data.status === 'success') {
+            console.log('API Response:', data);
+            displayActivities(data.data);
+            updatePagination(data.meta);
+        } else {
+            alert(data.message || 'An error occurred');
+        }
     } catch (error) {
         console.error('Error fetching activities:', error);
-        throw error;
+        alert('Failed to load activities. Please try again later.');
     }
 }
 
-// Render activities based on current filter, sort, and search criteria
-function renderActivities() {
+console.log(`Fetching from API: ${url}`);
+
+
+/**
+ * Display activities in the container
+ * Note: This function should use your existing HTML structure
+ */
+function displayActivities(activities) {
+    // Get the container
     const container = document.querySelector('.club-activities-container');
-    const searchInput = document.getElementById('search');
-    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
     
-    // Remove existing activities, keeping pagination
-    const pagination = container.querySelector('.pagination');
+    // Clear existing activities (except pagination)
+    const boxes = container.querySelectorAll('.box');
+    boxes.forEach(box => box.remove());
     
-    // Remove all child elements except pagination
-    while (container.firstChild) {
-        if (container.firstChild.classList && container.firstChild.classList.contains('pagination')) {
-            break;
-        }
-        container.removeChild(container.firstChild);
-    }
-    
-    // Filter activities
-    let filteredActivities = allActivities;
-    
-    // Filter by club
-    if (currentFilter !== 'All Clubs') {
-        filteredActivities = filteredActivities.filter(activity => activity.club === currentFilter);
-    }
-    
-    // Filter by search term
-    if (searchTerm) {
-        filteredActivities = filteredActivities.filter(activity => 
-            activity.title.toLowerCase().includes(searchTerm) || 
-            activity.content.toLowerCase().includes(searchTerm) ||
-            activity.club.toLowerCase().includes(searchTerm)
-        );
-    }
-    
-    // Sort activities
-    filteredActivities = sortActivities(filteredActivities, currentSort);
-    
-    // Calculate pagination
-    const startIndex = (currentPage - 1) * activitiesPerPage;
-    const endIndex = startIndex + activitiesPerPage;
-    const activitiesToShow = filteredActivities.slice(startIndex, endIndex);
-    
-    // Show message if no activities found
-    if (activitiesToShow.length === 0) {
-        const noActivities = document.createElement('div');
-        noActivities.className = 'no-activities';
-        noActivities.textContent = 'No activities found matching your criteria.';
-        container.insertBefore(noActivities, pagination);
+    // Check if no activities found
+    if (activities.length === 0) {
+        const noActivitiesEl = document.createElement('div');
+        noActivitiesEl.className = 'no-activities';
+        noActivitiesEl.innerHTML = '<h3>No activities found</h3><p>Try a different search term or filter.</p>';
+        container.appendChild(noActivitiesEl);
         return;
     }
     
-    // Create and append activity cards
-    activitiesToShow.forEach(activity => {
-        const card = createActivityCard(activity);
-        container.insertBefore(card, pagination);
-    });
-}
-
-// Create an activity card element
-function createActivityCard(activity) {
-    const card = document.createElement('div');
-    card.className = 'activity-card';
-    card.dataset.id = activity.id;
-    
-    card.innerHTML = `
-        <div class="card-image">
-            <img src="${activity.image}" alt="${activity.title}">
-        </div>
-        <div class="card-content">
-            <div class="card-header">
-                <div>
-                    <p class="username">${activity.username}</p>
-                    <p class="club-name">${activity.club}</p>
-                </div>
-            </div>
-            <h3 class="activity-title">${activity.title}</h3>
-            <p class="activity-content">${activity.content}</p>
-            <p class="activity-datetime">${activity.dateTime}</p>
-            <div class="card-footer">
-                <button class="comments-btn">Comments (${activity.commentCount})</button>
-            </div>
-        </div>
-    `;
-    
-    // Add click event to the card (but not to comments button)
-    card.addEventListener('click', (e) => {
-        // Check if the click is on the comments button or its children
-        if (!e.target.closest('.comments-btn')) {
-            showActivityDetails(activity);
-        }
-    });
-    
-    // Add a separate click event for comments button
-    const commentsBtn = card.querySelector('.comments-btn');
-    commentsBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent card click event from firing
-        showComments(activity.id);
-    });
-    
-    return card;
-}
-
-// Show activity details
-function showActivityDetails(activity) {
-    // Create modal for activity details
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    
-    modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="activity-details">
-                <h2>${activity.title}</h2>
-                <p class="username">${activity.username}</p>
-                <p class="club-name">${activity.club}</p>
-                <img src="${activity.image}" alt="${activity.title}" style="max-width: 100%; height: auto; margin: 10px 0;">
-                <p class="activity-description">${activity.content}</p>
-                <p class="activity-datetime">${activity.dateTime}</p>
-                <button class="comments-btn">View Comments (${activity.commentCount})</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Close modal when clicking on close button or outside the modal
-    const closeBtn = modal.querySelector('.close');
-    closeBtn.addEventListener('click', () => {
-        if (document.body.contains(modal)) {
-            document.body.removeChild(modal);
-            // Reset scrolling when modal is closed
-            document.body.style.overflow = '';
-        }
-    });
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            if (document.body.contains(modal)) {
-                document.body.removeChild(modal);
-                // Reset scrolling when modal is closed
-                document.body.style.overflow = '';
-            }
-        }
-    });
-    
-    // Add event listener for comments button in modal
-    const commentsBtn = modal.querySelector('.comments-btn');
-    commentsBtn.addEventListener('click', () => {
-        if (document.body.contains(modal)) {
-            document.body.removeChild(modal);
-        }
-        showComments(activity.id);
-    });
-    
-    // Prevent scrolling when modal is open
-    document.body.style.overflow = 'hidden';
-}
-
-// Show comments for an activity
-function showComments(activityId) {
-    // Create a loading modal first
-    const loadingModal = document.createElement('div');
-    loadingModal.className = 'modal';
-    loadingModal.innerHTML = `
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="comments-container">
-                <h2>Comments</h2>
-                <div class="loading-comments">Loading comments...</div>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(loadingModal);
-    
-    // Setup close handlers for the loading modal
-    const closeBtn = loadingModal.querySelector('.close');
-    closeBtn.addEventListener('click', () => {
-        if (document.body.contains(loadingModal)) {
-            document.body.removeChild(loadingModal);
-            document.body.style.overflow = '';
-        }
-    });
-    
-    loadingModal.addEventListener('click', (e) => {
-        if (e.target === loadingModal) {
-            if (document.body.contains(loadingModal)) {
-                document.body.removeChild(loadingModal);
-                document.body.style.overflow = '';
-            }
-        }
-    });
-    
-    // Prevent scrolling when modal is open
-    document.body.style.overflow = 'hidden';
-    
-    // Fetch comments from API
-    fetch(`https://jsonplaceholder.typicode.com/posts/${activityId}/comments`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(comments => {
-            // Generate comments HTML
-            let commentsHTML = '';
-            
-            if (comments.length === 0) {
-                commentsHTML = '<p>No comments yet. Be the first to comment!</p>';
-            } else {
-                commentsHTML = comments.map(comment => `
-                    <div class="comment">
-                        <h4>${comment.name}</h4>
-                        <p class="comment-email">${comment.email}</p>
-                        <p>${comment.body}</p>
-                    </div>
-                `).join('');
-            }
-            
-            // Update the modal content
-            const commentsContainer = loadingModal.querySelector('.comments-container');
-            commentsContainer.innerHTML = `
-                <h2>Comments</h2>
-                ${commentsHTML}
-                <form class="add-comment-form">
-                    <h3>Add a Comment</h3>
-                    <input type="text" placeholder="Name" required>
-                    <input type="email" placeholder="Email" required>
-                    <textarea placeholder="Your comment" required></textarea>
-                    <button type="submit">Submit</button>
-                </form>
-            `;
-            
-            // Handle comment form submission
-            const commentForm = commentsContainer.querySelector('.add-comment-form');
-            commentForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const nameInput = commentForm.querySelector('input[type="text"]');
-                const emailInput = commentForm.querySelector('input[type="email"]');
-                const commentInput = commentForm.querySelector('textarea');
-                
-                // Validate form
-                if (!nameInput.value.trim() || !emailInput.value.trim() || !commentInput.value.trim()) {
-                    alert('Please fill out all fields');
-                    return;
-                }
-                
-                // Show loading state
-                const submitBtn = commentForm.querySelector('button');
-                const originalText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Submitting...';
-                
-                // Simulate adding a comment (with a delay to show loading)
-                setTimeout(() => {
-                    const newComment = document.createElement('div');
-                    newComment.className = 'comment';
-                    newComment.innerHTML = `
-                        <h4>${nameInput.value}</h4>
-                        <p class="comment-email">${emailInput.value}</p>
-                        <p>${commentInput.value}</p>
-                    `;
-                    
-                    // Add new comment to the top of comments
-                    const firstComment = commentsContainer.querySelector('.comment');
-                    if (firstComment) {
-                        commentsContainer.insertBefore(newComment, firstComment);
-                    } else {
-                        // If there were no comments before
-                        const noCommentsMsg = commentsContainer.querySelector('p');
-                        if (noCommentsMsg && noCommentsMsg.textContent === 'No comments yet. Be the first to comment!') {
-                            commentsContainer.removeChild(noCommentsMsg);
-                        }
-                        commentsContainer.insertBefore(newComment, commentForm);
-                    }
-                    
-                    // Reset form and button
-                    commentForm.reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }, 500);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching comments:', error);
-            
-            // Show error in modal
-            const commentsContainer = loadingModal.querySelector('.comments-container');
-            commentsContainer.innerHTML = `
-                <h2>Comments</h2>
-                <p class="error-message">Failed to load comments. Please try again later.</p>
-                <button class="retry-btn">Retry</button>
-            `;
-            
-            // Add retry button handler
-            const retryBtn = commentsContainer.querySelector('.retry-btn');
-            retryBtn.addEventListener('click', () => {
-                if (document.body.contains(loadingModal)) {
-                    document.body.removeChild(loadingModal);
-                }
-                showComments(activityId);
-            });
+    // Create activity boxes using your existing HTML structure
+    activities.forEach(activity => {
+        const box = document.createElement('div');
+        box.className = 'box';
+        
+        // Format the date
+        const activityDate = new Date(activity.datetime);
+        const formattedDate = activityDate.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
         });
+        
+        // Use your existing HTML template structure
+        box.innerHTML = `
+            <div class="box-header">
+                <h6>${escapeHtml(activity.title)}</h6>
+                <p>${escapeHtml(activity.club)}</p>
+            </div>
+            <p>${escapeHtml(activity.content)}</p>
+            <img src="${escapeHtml(activity.image_url)}" alt="${escapeHtml(activity.title)}" />
+            <p>${formattedDate}</p>
+            <button class="comments-btn" data-id="${activity.id}">Comments</button>
+        `;
+        
+        // Add to container (before pagination if it exists)
+        const pagination = container.querySelector('.pagination');
+        if (pagination) {
+            container.insertBefore(box, pagination);
+        } else {
+            container.appendChild(box);
+        }
+        
+        // Add event listener for comments button
+        const commentsBtn = box.querySelector('.comments-btn');
+        commentsBtn.addEventListener('click', () => showComments(activity.id));
+    });
 }
 
-// Initialize pagination
-function initPagination() {
-    const container = document.querySelector('.club-activities-container');
-    let pagination = container.querySelector('.pagination');
-    
-    // If pagination doesn't exist, create it
-    if (!pagination) {
-        pagination = document.createElement('div');
-        pagination.className = 'pagination';
-        container.appendChild(pagination);
-    } else {
-        // Clear existing pagination buttons
-        pagination.innerHTML = '';
+/**
+ * Update pagination controls
+ */
+function updatePagination(meta) {
+    // Remove existing pagination
+    const existingPagination = document.querySelector('.pagination');
+    if (existingPagination) {
+        existingPagination.remove();
     }
     
-    // Filter activities based on current criteria
-    let filteredActivities = allActivities;
+    // Create pagination container
+    const pagination = document.createElement('div');
+    pagination.className = 'pagination';
     
-    // Filter by club
-    if (currentFilter !== 'All Clubs') {
-        filteredActivities = filteredActivities.filter(activity => activity.club === currentFilter);
-    }
-    
-    // Filter by search term
-    const searchInput = document.getElementById('search');
-    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-    if (searchTerm) {
-        filteredActivities = filteredActivities.filter(activity => 
-            activity.title.toLowerCase().includes(searchTerm) || 
-            activity.content.toLowerCase().includes(searchTerm) ||
-            activity.club.toLowerCase().includes(searchTerm)
-        );
-    }
-    
-    // Calculate total pages
-    const totalPages = Math.ceil(filteredActivities.length / activitiesPerPage);
-    
-    // Create previous button
+    // Previous button
     const prevBtn = document.createElement('button');
     prevBtn.className = 'page-btn';
+    prevBtn.disabled = meta.page <= 1;
     prevBtn.textContent = '« Prev';
-    prevBtn.disabled = currentPage === 1;
     prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
+        if (meta.page > 1) {
             currentPage--;
-            renderActivities();
-            initPagination();
+            fetchActivities();
         }
     });
     pagination.appendChild(prevBtn);
     
-    // Create page number buttons
-    const maxPageButtons = 3;
-    let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
-    let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
-    
-    // Adjust start page if we're near the end
-    if (endPage - startPage + 1 < maxPageButtons) {
-        startPage = Math.max(1, endPage - maxPageButtons + 1);
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
+    // Page numbers
+    for (let i = 1; i <= meta.totalPages; i++) {
         const pageBtn = document.createElement('button');
         pageBtn.className = 'page-btn';
-        pageBtn.textContent = i;
-        if (i === currentPage) {
+        if (i === meta.page) {
             pageBtn.classList.add('active');
         }
+        pageBtn.textContent = i;
         pageBtn.addEventListener('click', () => {
             currentPage = i;
-            renderActivities();
-            initPagination();
+            fetchActivities();
         });
         pagination.appendChild(pageBtn);
     }
     
-    // Create next button
+    // Next button
     const nextBtn = document.createElement('button');
     nextBtn.className = 'page-btn';
+    nextBtn.disabled = meta.page >= meta.totalPages;
     nextBtn.textContent = 'Next »';
-    nextBtn.disabled = currentPage === totalPages || totalPages === 0;
     nextBtn.addEventListener('click', () => {
-        if (currentPage < totalPages) {
+        if (meta.page < meta.totalPages) {
             currentPage++;
-            renderActivities();
-            initPagination();
+            fetchActivities();
         }
     });
     pagination.appendChild(nextBtn);
+    
+    // Add pagination to container
+    document.querySelector('.club-activities-container').appendChild(pagination);
 }
 
-// Sort activities based on selected option
-function sortActivities(activities, sortOption) {
-    switch (sortOption) {
-        case 'Newest':
-            // Sort by date (newest first)
-            return [...activities].sort((a, b) => {
-                const dateA = new Date(a.dateTime.split('-')[0].trim());
-                const dateB = new Date(b.dateTime.split('-')[0].trim());
-                return dateB - dateA;
+/**
+ * Show comments for an activity
+ */
+async function showComments(activityId) {
+    try {
+        // Fetch activity with comments
+        const url = `${API_URL}?action=getActivity&id=${activityId}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        
+        if (data.status !== 'success') {
+            throw new Error(data.message || 'Failed to load comments');
+        }
+        
+        const activity = data.data;
+        const comments = activity.comments || [];
+        
+        // Create modal HTML - use your existing modal style
+        // This implementation assumes you have CSS for a modal or similar
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Comments for "${escapeHtml(activity.title)}"</h2>
+                <div class="comments-list">
+                    ${comments.length > 0 ? comments.map(comment => `
+                        <div class="comment">
+                            <div class="comment-header">
+                                <strong>${escapeHtml(comment.name)}</strong>
+                                <span>${new Date(comment.created_at).toLocaleString()}</span>
+                            </div>
+                            <p>${escapeHtml(comment.comment)}</p>
+                        </div>
+                    `).join('') : '<p>No comments yet. Be the first to comment!</p>'}
+                </div>
+                <form class="comment-form">
+                    <h3>Add a Comment</h3>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Your Comment</label>
+                        <textarea id="comment" name="comment" rows="3" required></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close modal when clicking the 'x'
+        const closeBtn = modal.querySelector('.close');
+        closeBtn.addEventListener('click', () => {
+            modal.remove();
+        });
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', event => {
+            if (event.target === modal) {
+                modal.remove();
+            }
+        });
+        
+        // Handle comment submission
+        const commentForm = modal.querySelector('.comment-form');
+        commentForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const formData = new FormData(commentForm);
+            const commentData = {
+                activity_id: activityId,
+                name: formData.get('name'),
+                comment: formData.get('comment')
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}?action=addComment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commentData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // Close the current modal and reopen with updated comments
+                    modal.remove();
+                    showComments(activityId);
+                } else {
+                    alert(data.message || 'Failed to add comment');
+                }
+            } catch (error) {
+                console.error('Error adding comment:', error);
+                alert('Failed to add comment. Please try again later.');
+            }
+        });
+    } catch (error) {
+        console.error('Error loading comments:', error);
+        alert('Failed to load comments. Please try again later.');
+    }
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe
+        .toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+/**
+ * Initialize the application
+ */
+function initApp() {
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    currentSearch = urlParams.get('search') || '';
+    currentClub = urlParams.get('club') || 'All Clubs';
+    currentSort = urlParams.get('sort') || 'Newest';
+    currentPage = parseInt(urlParams.get('page')) || 1;
+    
+    // Set initial form values
+    const searchInput = document.getElementById('search');
+    if (searchInput) {
+        searchInput.value = currentSearch;
+        // Add event listener for search input (with debounce)
+        searchInput.addEventListener('input', debounce(() => {
+            currentSearch = searchInput.value.trim();
+            currentPage = 1;
+            fetchActivities();
+        }, 500));
+    }
+    
+    // Set up view select
+    const viewSelect = document.getElementById('view');
+    if (viewSelect) {
+        viewSelect.value = currentSort;
+        viewSelect.addEventListener('change', () => {
+            currentSort = viewSelect.value;
+            currentPage = 1;
+            fetchActivities();
+        });
+    }
+    
+    // Set up club selection
+    const clubsMenu = document.querySelector('.all-clubs-container ul');
+    if (clubsMenu) {
+        const clubItems = clubsMenu.querySelectorAll('li');
+        clubItems.forEach(item => {
+            item.classList.toggle('active', item.textContent === currentClub);
+            
+            item.addEventListener('click', () => {
+                clubItems.forEach(c => c.classList.remove('active'));
+                item.classList.add('active');
+                
+                currentClub = item.textContent;
+                currentPage = 1;
+                fetchActivities();
             });
-        case 'Oldest':
-            // Sort by date (oldest first)
-            return [...activities].sort((a, b) => {
-                const dateA = new Date(a.dateTime.split('-')[0].trim());
-                const dateB = new Date(b.dateTime.split('-')[0].trim());
-                return dateA - dateB;
-            });
-        default:
-            return activities;
+        });
     }
+    
+    // Fetch initial data
+    fetchActivities();
 }
 
-// Show loading state
-function showLoading(isLoading) {
-    // Handle loading placeholder in the activities container
-    const container = document.querySelector('.club-activities-container');
-    const loadingPlaceholder = container.querySelector('.loading-placeholder');
-    
-    if (isLoading) {
-        if (loadingPlaceholder) {
-            loadingPlaceholder.style.display = 'block';
-        }
-    } else {
-        if (loadingPlaceholder) {
-            loadingPlaceholder.style.display = 'none';
-        }
-    }
-    
-    // Handle full-page loader
-    const existingLoader = document.querySelector('.loader-container');
-    if (existingLoader) {
-        document.body.removeChild(existingLoader);
-    }
-    
-    if (isLoading) {
-        const loaderContainer = document.createElement('div');
-        loaderContainer.className = 'loader-container';
-        loaderContainer.innerHTML = '<div class="loader"></div>';
-        document.body.appendChild(loaderContainer);
-    }
-}
-
-// Show error message
-function showError(message) {
-    const errorContainer = document.createElement('div');
-    errorContainer.className = 'error-container';
-    errorContainer.textContent = message;
-    
-    document.body.appendChild(errorContainer);
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (document.body.contains(errorContainer)) {
-            document.body.removeChild(errorContainer);
-        }
-    }, 5000);
-}
-
-// Debounce function to limit how often a function can be called
-function debounce(func, delay) {
+/**
+ * Debounce function to limit how often a function is called
+ */
+function debounce(func, wait) {
     let timeout;
-    return function() {
-        const context = this;
-        const args = arguments;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
         clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(context, args), delay);
+        timeout = setTimeout(later, wait);
     };
 }
+
+// Initialize the application when the DOM is loaded
+document.addEventListener('DOMContentLoaded', initApp);
