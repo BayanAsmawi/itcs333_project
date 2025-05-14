@@ -13,7 +13,7 @@
       body {
         display: flex;
         flex-direction: column;
-        min-height: 100vh; /* Ensure the body takes up at least the full screen height */
+        min-height: 100vh;
         font-family: "Arial", sans-serif;
         background-color: #ffcf9d;
         margin: 0;
@@ -70,7 +70,7 @@
         text-align: left;
         padding: 10px;
         color: #333;
-        margin-top: auto; /* Pushes the footer to the bottom */
+        margin-top: auto;
       }
       .back-btn {
         display: inline-block;
@@ -97,39 +97,45 @@
       </div>
     </header>
 
-    <div class="event-details-container" id="event-details"></div>
+    <div class="event-details-container" id="event-details">
+      <p>Loading event details...</p>
+    </div>
 
     <script>
       const urlParams = new URLSearchParams(window.location.search);
       const eventId = urlParams.get("id");
+      const API_URL = "https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/events.php";
 
       const eventDetailsContainer = document.getElementById("event-details");
 
-      function loadEvents() {
-        const storedEvents = localStorage.getItem("events");
-        return storedEvents ? JSON.parse(storedEvents) : [];
+      async function fetchEventById(id) {
+        try {
+          const response = await fetch(`${API_URL}?id=${id}`);
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Error fetching event:", error);
+          return null;
+        }
       }
 
-      function findEventById(id) {
-        const events = loadEvents();
-        return events.find((event) => event.id === id);
-      }
+      async function displayEventDetails() {
+        const event = await fetchEventById(eventId);
 
-      function displayEventDetails() {
-        const event = findEventById(eventId);
-
-        if (event) {
+        if (event && !event.error) {
           eventDetailsContainer.innerHTML = `
-                    <h2>${event.title}</h2>
-                    <p><strong>Date:</strong> ${event.date}</p>
-                    <p><strong>Location:</strong> ${event.location}</p>
-                    <p><strong>Description:</strong></p>
-                    <p>${event.description}</p>
-                    <a class="back-btn" href="events.html">← Back to Events</a>
-                `;
+            <h2>${event.title}</h2>
+            <p><strong>Date:</strong> ${event.date}</p>
+            <p><strong>Location:</strong> ${event.location}</p>
+            <p><strong>Description:</strong></p>
+            <p>${event.description}</p>
+            <a class="back-btn" href="events.html">← Back to Events</a>
+          `;
         } else {
-          eventDetailsContainer.innerHTML = `<p>Event not found.</p>
-                    <a class="back-btn" href="events.html">← Back to Events</a>`;
+          eventDetailsContainer.innerHTML = `
+            <p>Event not found.</p>
+            <a class="back-btn" href="events.html">← Back to Events</a>
+          `;
         }
       }
 
