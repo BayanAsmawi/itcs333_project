@@ -1,6 +1,6 @@
 //campus.js for Campus News Module
 
-const DATA_URL = "news.json"; // or 
+const DATA_URL = "campus/news.json"; // or 
 
 const newsContainer = document.querySelector(".row.g-4");
 const searchInput = document.querySelector("input[type='search']");
@@ -19,7 +19,9 @@ const itemsPerPage = 5;
 async function fetchNews() {
   try {
     showLoading();
-    const response = await fetch(DATA_URL);
+    const response = await fetch('news.json'); // correct if same folder
+
+    //const response = await fetch(DATA_URL);
     const apiNews = await response.json();
 
     const localNews = JSON.parse(localStorage.getItem("newsData") || "[]");
