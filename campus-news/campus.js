@@ -1,6 +1,7 @@
 //campus.js for Campus News Module
 
-const DATA_URL = "news.json"; // or 
+const DATA_URL = "campus/news.json"; // or 
+const API_BASE_URL = "https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/Api.php";
 
 const newsContainer = document.querySelector(".row.g-4");
 const searchInput = document.querySelector("input[type='search']");
@@ -19,10 +20,12 @@ const itemsPerPage = 5;
 async function fetchNews() {
   try {
     showLoading();
-    const response = await fetch(DATA_URL);
+    const response = await fetch("https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/Api.php"); 
+
+    //const response = await fetch(DATA_URL);
     const apiNews = await response.json();
 
-    const localNews = JSON.parse(localStorage.getItem("newsData") || "[]");
+    //const localNews = JSON.parse(localStorage.getItem("newsData") || "[]");
     newsData = [...apiNews, ...localNews];
 
     renderNews();
@@ -125,3 +128,4 @@ sortSelect.addEventListener("change", () => {
 });
 
 fetchNews();
+          
