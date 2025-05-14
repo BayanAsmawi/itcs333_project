@@ -1,4 +1,3 @@
-// form.js - Form validation and submission for adding club activities
 document.addEventListener('DOMContentLoaded', () => {
     // Get the form element
     const activityForm = document.querySelector('.activity-form');
@@ -42,7 +41,6 @@ function setupButtonHandlers() {
         });
     }
     
-    // Cancel button already has href="index.html" so it will work correctly
 }
 
 // Validate all fields and return if valid
@@ -94,7 +92,7 @@ async function submitForm() {
     
     try {
         // Send the data to the API
-        const API_URL = 'https://c648da09-844c-4195-ace2-0efe90b02c44-00-5cq8jfmscezu.sisko.replit.dev/api.php';
+        const API_URL = 'https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/club-activities/api.php';
         const response = await fetch(`${API_URL}?action=createActivity`, {
             method: 'POST',
             headers: {

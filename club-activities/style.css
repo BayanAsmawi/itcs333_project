@@ -345,8 +345,8 @@ a {
     border: none;
     cursor: pointer;
     color: white;
-    background-color: #493628; /* Button color */
-    border-radius: 5px; /* Optional: rounded corners */
+    background-color: #493628; 
+    border-radius: 5px; 
     transition: background-color 0.3s ease;
 }
 

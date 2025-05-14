@@ -1,16 +1,7 @@
-/**
- * Club Activities JavaScript - API Integration
- * 
- * This file contains the modified JavaScript code for the club activities application
- * that fetches data from the PHP API instead of using dummy data.
- */
-
-// Constants
-const API_URL = 'https://c648da09-844c-4195-ace2-0efe90b02c44-00-5cq8jfmscezu.sisko.replit.dev/api.php';
+const API_URL = 'https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/club-activities/api.php';
 
 // State variables
-let currentPage = 1;
-let currentLimit = 6; // Number of activities per page
+let currentLimit = 6; 
 let currentSearch = '';
 let currentClub = 'All Clubs';
 let currentSort = 'Newest';
@@ -31,6 +22,7 @@ async function fetchActivities() {
         params.append('limit', currentLimit);
         
         const url = `${API_URL}?${params.toString()}`;
+        console.log(`Fetching from API: ${url}`);
         
         // Show loading message or indicator (using your existing styles)
         const loadingMessage = document.createElement('div');
@@ -62,13 +54,6 @@ async function fetchActivities() {
     }
 }
 
-console.log(`Fetching from API: ${url}`);
-
-
-/**
- * Display activities in the container
- * Note: This function should use your existing HTML structure
- */
 function displayActivities(activities) {
     // Get the container
     const container = document.querySelector('.club-activities-container');
@@ -102,7 +87,6 @@ function displayActivities(activities) {
             hour12: true
         });
         
-        // Use your existing HTML template structure
         box.innerHTML = `
             <div class="box-header">
                 <h6>${escapeHtml(activity.title)}</h6>
@@ -128,9 +112,6 @@ function displayActivities(activities) {
     });
 }
 
-/**
- * Update pagination controls
- */
 function updatePagination(meta) {
     // Remove existing pagination
     const existingPagination = document.querySelector('.pagination');
@@ -187,9 +168,6 @@ function updatePagination(meta) {
     document.querySelector('.club-activities-container').appendChild(pagination);
 }
 
-/**
- * Show comments for an activity
- */
 async function showComments(activityId) {
     try {
         // Fetch activity with comments
@@ -209,8 +187,6 @@ async function showComments(activityId) {
         const activity = data.data;
         const comments = activity.comments || [];
         
-        // Create modal HTML - use your existing modal style
-        // This implementation assumes you have CSS for a modal or similar
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
@@ -303,9 +279,7 @@ async function showComments(activityId) {
     }
 }
 
-/**
- * Escape HTML to prevent XSS
- */
+
 function escapeHtml(unsafe) {
     if (!unsafe) return '';
     return unsafe
@@ -317,9 +291,6 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-/**
- * Initialize the application
- */
 function initApp() {
     // Get URL parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -373,9 +344,6 @@ function initApp() {
     fetchActivities();
 }
 
-/**
- * Debounce function to limit how often a function is called
- */
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
