@@ -23,7 +23,9 @@ async function fetchDetail() {
     }
 
     // Fallback: Load from API
-    const response = await fetch(DETAIL_DATA_URL);
+    //const response = await fetch(DETAIL_DATA_URL);
+    const response = await fetch("https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/Api.php"); 
+
     const apiNews = await response.json();
     const apiItem = apiNews.find(item => item.id == newsId);
 
