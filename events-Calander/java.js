@@ -8,7 +8,7 @@ const submitButton = document.querySelector('#event-form button[type="submit"]')
 let events = [];
 let currentEditId = null;
 
-const API_URL = 'https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/events.php';
+const API_URL = 'https://0e4c4464-608d-4520-af48-62a05630030e-00-1xcy3qajro2rv.pike.replit.dev/bacekend/events.php';
 
 document.getElementById('searchEvents')?.addEventListener('input', function (e) {
   const query = e.target.value.toLowerCase();
