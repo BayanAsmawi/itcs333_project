@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize form validation
         initFormValidation();
         
-        // Handle form submission
-        activityForm.addEventListener('submit', handleFormSubmit);
+        // Handle button clicks
+        setupButtonHandlers();
     }
 });
 
@@ -28,18 +28,23 @@ function initFormValidation() {
     contentTextarea.addEventListener('input', () => validateField(contentTextarea, validateContent));
     datetimeInput.addEventListener('input', () => validateField(datetimeInput, validateDateTime));
     imageInput.addEventListener('change', () => validateField(imageInput, validateImage));
-    
-    // Fix cancel button
-    const cancelButton = document.querySelector('.form-buttons a');
-    if (cancelButton) {
-        cancelButton.parentElement.innerHTML = '<a href="index.html" class="cancel-btn">Cancel</a>';
-    }
 }
 
-// Handle form submission
-function handleFormSubmit(e) {
-    e.preventDefault();
+// Setup button handlers
+function setupButtonHandlers() {
+    // Add button - just validates the form but doesn't submit
+    const addButton = document.getElementById('add-activity-btn');
+    if (addButton) {
+        addButton.addEventListener('click', () => {
+            validateAllFields();
+        });
+    }
     
+    // Cancel button already has href="index.html" so it will work correctly
+}
+
+// Validate all fields without submission
+function validateAllFields() {
     // Get form elements
     const titleInput = document.getElementById('title');
     const clubSelect = document.getElementById('club');
@@ -54,44 +59,12 @@ function handleFormSubmit(e) {
     const isDateTimeValid = validateField(datetimeInput, validateDateTime);
     const isImageValid = validateField(imageInput, validateImage);
     
-    // Check if all fields are valid
+    // Check if all fields are valid and show appropriate message
     if (isTitleValid && isClubValid && isContentValid && isDateTimeValid && isImageValid) {
-        // Show loading state
-        showSubmitLoading(true);
-        
-        // Simulate form submission (since we don't have a real backend)
-        setTimeout(() => {
-            // Create new activity object
-            const newActivity = {
-                title: titleInput.value,
-                club: clubSelect.value,
-                content: contentTextarea.value,
-                dateTime: formatDateTime(datetimeInput.value),
-                image: imageInput.files.length ? URL.createObjectURL(imageInput.files[0]) : null
-            };
-            
-            // Store in localStorage (for demonstration purposes)
-            const activities = JSON.parse(localStorage.getItem('campusHubActivities') || '[]');
-            activities.push(newActivity);
-            localStorage.setItem('campusHubActivities', JSON.stringify(activities));
-            
-            // Hide loading state
-            showSubmitLoading(false);
-            
-            // Show success message
-            showSubmitSuccess('Activity added successfully!');
-            
-            // Reset form
-            e.target.reset();
-            
-            // Redirect back to index page after a short delay
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-        }, 1500);
+        showSubmitSuccess('Form validation successful! (This button does nothing as requested)');
     } else {
         // Show error message
-        showValidationErrorMessage('Please fix the errors in the form before submitting.');
+        showValidationErrorMessage('Please fix the errors in the form before proceeding.');
     }
 }
 
@@ -233,25 +206,7 @@ function formatDateTime(dateTimeString) {
     return `${month} ${day}, ${year} – ${hours}:${minutes} ${ampm}`;
 }
 
-// Show loading state during form submission
-function showSubmitLoading(isLoading) {
-    // Remove existing submission status
-    const existingStatus = document.querySelector('.form-submission-status');
-    if (existingStatus) {
-        existingStatus.parentElement.removeChild(existingStatus);
-    }
-    
-    if (isLoading) {
-        const statusContainer = document.createElement('div');
-        statusContainer.className = 'form-submission-status loading';
-        statusContainer.innerHTML = '<div class="loader"></div><span>Submitting...</span>';
-        
-        const formButtons = document.querySelector('.form-buttons');
-        formButtons.parentElement.insertBefore(statusContainer, formButtons);
-    }
-}
-
-// Show success message after form submission
+// Show success message after form validation
 function showSubmitSuccess(message) {
     // Remove existing submission status
     const existingStatus = document.querySelector('.form-submission-status');
@@ -265,6 +220,13 @@ function showSubmitSuccess(message) {
     
     const formButtons = document.querySelector('.form-buttons');
     formButtons.parentElement.insertBefore(statusContainer, formButtons);
+    
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        if (document.body.contains(statusContainer)) {
+            statusContainer.parentElement.removeChild(statusContainer);
+        }
+    }, 3000);
 }
 
 // Show validation error message

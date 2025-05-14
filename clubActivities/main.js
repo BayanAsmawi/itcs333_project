@@ -235,17 +235,18 @@ function createActivityCard(activity) {
         </div>
     `;
     
-    // Add click event to show activity details
+    // Add click event to the card (but not to comments button)
     card.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('comments-btn')) {
+        // Check if the click is on the comments button or its children
+        if (!e.target.closest('.comments-btn')) {
             showActivityDetails(activity);
         }
     });
     
-    // Add click event for comments button
+    // Add a separate click event for comments button
     const commentsBtn = card.querySelector('.comments-btn');
     commentsBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // Prevent card click event from firing
         showComments(activity.id);
     });
     
@@ -265,7 +266,7 @@ function showActivityDetails(activity) {
                 <h2>${activity.title}</h2>
                 <p class="username">${activity.username}</p>
                 <p class="club-name">${activity.club}</p>
-                <img src="${activity.image}" alt="${activity.title}">
+                <img src="${activity.image}" alt="${activity.title}" style="max-width: 100%; height: auto; margin: 10px 0;">
                 <p class="activity-description">${activity.content}</p>
                 <p class="activity-datetime">${activity.dateTime}</p>
                 <button class="comments-btn">View Comments (${activity.commentCount})</button>
@@ -278,35 +279,74 @@ function showActivityDetails(activity) {
     // Close modal when clicking on close button or outside the modal
     const closeBtn = modal.querySelector('.close');
     closeBtn.addEventListener('click', () => {
-        document.body.removeChild(modal);
+        if (document.body.contains(modal)) {
+            document.body.removeChild(modal);
+            // Reset scrolling when modal is closed
+            document.body.style.overflow = '';
+        }
     });
     
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            document.body.removeChild(modal);
+            if (document.body.contains(modal)) {
+                document.body.removeChild(modal);
+                // Reset scrolling when modal is closed
+                document.body.style.overflow = '';
+            }
         }
     });
     
     // Add event listener for comments button in modal
     const commentsBtn = modal.querySelector('.comments-btn');
     commentsBtn.addEventListener('click', () => {
-        document.body.removeChild(modal);
+        if (document.body.contains(modal)) {
+            document.body.removeChild(modal);
+        }
         showComments(activity.id);
     });
     
     // Prevent scrolling when modal is open
     document.body.style.overflow = 'hidden';
-    
-    // Reset scrolling when modal is closed
-    modal.addEventListener('transitionend', () => {
-        if (!document.body.contains(modal)) {
-            document.body.style.overflow = '';
-        }
-    });
 }
 
 // Show comments for an activity
 function showComments(activityId) {
+    // Create a loading modal first
+    const loadingModal = document.createElement('div');
+    loadingModal.className = 'modal';
+    loadingModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="comments-container">
+                <h2>Comments</h2>
+                <div class="loading-comments">Loading comments...</div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(loadingModal);
+    
+    // Setup close handlers for the loading modal
+    const closeBtn = loadingModal.querySelector('.close');
+    closeBtn.addEventListener('click', () => {
+        if (document.body.contains(loadingModal)) {
+            document.body.removeChild(loadingModal);
+            document.body.style.overflow = '';
+        }
+    });
+    
+    loadingModal.addEventListener('click', (e) => {
+        if (e.target === loadingModal) {
+            if (document.body.contains(loadingModal)) {
+                document.body.removeChild(loadingModal);
+                document.body.style.overflow = '';
+            }
+        }
+    });
+    
+    // Prevent scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+    
     // Fetch comments from API
     fetch(`https://jsonplaceholder.typicode.com/posts/${activityId}/comments`)
         .then(response => {
@@ -316,51 +356,37 @@ function showComments(activityId) {
             return response.json();
         })
         .then(comments => {
-            // Create modal for comments
-            const modal = document.createElement('div');
-            modal.className = 'modal';
+            // Generate comments HTML
+            let commentsHTML = '';
             
-            let commentsHTML = comments.map(comment => `
-                <div class="comment">
-                    <h4>${comment.name}</h4>
-                    <p class="comment-email">${comment.email}</p>
-                    <p>${comment.body}</p>
-                </div>
-            `).join('');
-            
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <div class="comments-container">
-                        <h2>Comments</h2>
-                        ${commentsHTML}
-                        <form class="add-comment-form">
-                            <h3>Add a Comment</h3>
-                            <input type="text" placeholder="Name" required>
-                            <input type="email" placeholder="Email" required>
-                            <textarea placeholder="Your comment" required></textarea>
-                            <button type="submit">Submit</button>
-                        </form>
+            if (comments.length === 0) {
+                commentsHTML = '<p>No comments yet. Be the first to comment!</p>';
+            } else {
+                commentsHTML = comments.map(comment => `
+                    <div class="comment">
+                        <h4>${comment.name}</h4>
+                        <p class="comment-email">${comment.email}</p>
+                        <p>${comment.body}</p>
                     </div>
-                </div>
+                `).join('');
+            }
+            
+            // Update the modal content
+            const commentsContainer = loadingModal.querySelector('.comments-container');
+            commentsContainer.innerHTML = `
+                <h2>Comments</h2>
+                ${commentsHTML}
+                <form class="add-comment-form">
+                    <h3>Add a Comment</h3>
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea placeholder="Your comment" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
             `;
             
-            document.body.appendChild(modal);
-            
-            // Close modal when clicking on close button or outside the modal
-            const closeBtn = modal.querySelector('.close');
-            closeBtn.addEventListener('click', () => {
-                document.body.removeChild(modal);
-            });
-            
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    document.body.removeChild(modal);
-                }
-            });
-            
             // Handle comment form submission
-            const commentForm = modal.querySelector('.add-comment-form');
+            const commentForm = commentsContainer.querySelector('.add-comment-form');
             commentForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
@@ -374,36 +400,61 @@ function showComments(activityId) {
                     return;
                 }
                 
-                // Simulate adding a comment
-                const newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = `
-                    <h4>${nameInput.value}</h4>
-                    <p class="comment-email">${emailInput.value}</p>
-                    <p>${commentInput.value}</p>
-                `;
+                // Show loading state
+                const submitBtn = commentForm.querySelector('button');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
                 
-                // Add new comment to the top
-                const commentsContainer = modal.querySelector('.comments-container');
-                commentsContainer.insertBefore(newComment, commentsContainer.children[1]);
-                
-                // Reset form
-                commentForm.reset();
-            });
-            
-            // Prevent scrolling when modal is open
-            document.body.style.overflow = 'hidden';
-            
-            // Reset scrolling when modal is closed
-            modal.addEventListener('transitionend', () => {
-                if (!document.body.contains(modal)) {
-                    document.body.style.overflow = '';
-                }
+                // Simulate adding a comment (with a delay to show loading)
+                setTimeout(() => {
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    newComment.innerHTML = `
+                        <h4>${nameInput.value}</h4>
+                        <p class="comment-email">${emailInput.value}</p>
+                        <p>${commentInput.value}</p>
+                    `;
+                    
+                    // Add new comment to the top of comments
+                    const firstComment = commentsContainer.querySelector('.comment');
+                    if (firstComment) {
+                        commentsContainer.insertBefore(newComment, firstComment);
+                    } else {
+                        // If there were no comments before
+                        const noCommentsMsg = commentsContainer.querySelector('p');
+                        if (noCommentsMsg && noCommentsMsg.textContent === 'No comments yet. Be the first to comment!') {
+                            commentsContainer.removeChild(noCommentsMsg);
+                        }
+                        commentsContainer.insertBefore(newComment, commentForm);
+                    }
+                    
+                    // Reset form and button
+                    commentForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                }, 500);
             });
         })
         .catch(error => {
             console.error('Error fetching comments:', error);
-            showError('Failed to load comments. Please try again later.');
+            
+            // Show error in modal
+            const commentsContainer = loadingModal.querySelector('.comments-container');
+            commentsContainer.innerHTML = `
+                <h2>Comments</h2>
+                <p class="error-message">Failed to load comments. Please try again later.</p>
+                <button class="retry-btn">Retry</button>
+            `;
+            
+            // Add retry button handler
+            const retryBtn = commentsContainer.querySelector('.retry-btn');
+            retryBtn.addEventListener('click', () => {
+                if (document.body.contains(loadingModal)) {
+                    document.body.removeChild(loadingModal);
+                }
+                showComments(activityId);
+            });
         });
 }
 

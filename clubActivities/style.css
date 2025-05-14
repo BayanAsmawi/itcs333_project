@@ -317,11 +317,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.activity-form {
-    display: flex;
-    flex-direction: column;
-}
-
 .activity-form label {
     margin: 10px 0 5px;
 }
@@ -336,10 +331,10 @@ body {
 }
 
 .activity-form .form-buttons {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px; /* Optional: Add padding for spacing */
-    flex-direction: column-reverse;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px
 }
 
 a {
@@ -366,6 +361,170 @@ a {
     color: white;
 }
 
-.activity-form .form-buttons .cancel-btn a {
-    color: white; /* Ensure the link is white */
+.activity-form .form-buttons .cancel-btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #c14600;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.activity-form .form-buttons .cancel-btn:hover {
+  background-color: #a03700;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: #ffcf9d;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #493628;
+}
+
+.close:hover {
+  color: #c14600;
+}
+
+.activity-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.activity-details h2 {
+  color: #493628;
+  margin-top: 10px;
+}
+
+.activity-details img {
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.activity-description {
+  line-height: 1.6;
+}
+
+/* Comments Styles */
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comment {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.comment h4 {
+  margin: 0 0 5px 0;
+  color: #493628;
+}
+
+.comment-email {
+  color: #666;
+  font-size: 0.9em;
+  margin: 0 0 10px 0;
+}
+
+.add-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.add-comment-form h3 {
+  margin: 0 0 10px 0;
+  color: #493628;
+}
+
+.add-comment-form input,
+.add-comment-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.add-comment-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.add-comment-form button {
+  background-color: #c14600;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s ease;
+}
+
+.add-comment-form button:hover {
+  background-color: #a03700;
+}
+
+.loading-comments {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #666;
+}
+
+.error-message {
+  color: #c14600;
+  text-align: center;
+  font-weight: bold;
+}
+
+.retry-btn {
+  background-color: #c14600;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px auto;
+  display: block;
+}
+
+.retry-btn:hover {
+  background-color: #a03700;
 }
