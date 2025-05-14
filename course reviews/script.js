@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // progress bar + total reviews
-  
   fetch('reviews.json')
     .then(response => {
       if (!response.ok) {

@@ -466,6 +466,7 @@ $total_reviews = array_sum($ratings);
   </div>
   <script src="script.js"></script>
 </body>
+
 <!-- Loading Indicator -->
 <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
   <div class="spinner-border text-primary" role="status">
