@@ -1,4 +1,5 @@
 /* body and nav-bar styling */
+
 body {
   background-color: #ffcf9d;
   padding-top: 30px;
@@ -380,6 +381,7 @@ footer {
 #searchInput,
 #filterSelect,
 #sortSelect {
+  color: #000;
   background-color: #f5e7b2;
   border-color: #c14600;
 }
@@ -429,3 +431,120 @@ nav {
   padding: 30px;
   border-radius: 1%;
 }
+
+.group-list.grid article {
+  padding: 1.5em;
+  margin-bottom: 6.5%;
+  background-color: #ff9d23;
+  transition: transform 0.2s;
+  border-radius: 1em solid #ff9d23;
+  box-shadow: 0 2px 4px #a86f29;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.group-list.grid article:hover {
+  background-color: #ff9d23;
+  transform: scale(1.02);
+  animation-timing-function: linear;
+}
+
+.group-list.grid article p, .group-list.grid article h3 {
+  color: #000;
+}
+
+.group-list.grid article .viewBtn {
+  margin: auto;
+  border-color: transparent;
+  background-color: #9F8383;
+  width: auto;
+  transition: transform 0.2s;
+  border-radius: 2em;
+  box-shadow: 0 2px 4px #00000080;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.group-list.grid article .viewBtn:hover {
+  background-color: #574964;
+  transform: scale(1.02);
+  animation-timing-function: linear;
+}
+
+nav {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  padding: 0;
+  margin-top: 2em;
+  width: 100%;
+}
+
+.pagination button {
+  padding: 0.4em 0.8em; 
+  margin: 0;
+  min-width: 2em;
+  color: #000;
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 1em;
+}
+
+.pagination button:hover {
+  background-color: #a89c29;
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.02);
+  animation-timing-function: linear;
+}
+
+.pagination .contrast {
+  color: #fff;
+  background-color: #493628;
+  border-color: transparent;
+  box-shadow: 0 2px 4px #00000080;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+
+    .nav-bar .user-menu {
+        position: relative;
+        display: inline-block;
+    }
+
+    .nav-bar .user-menu-dropdown {
+        display: none;
+        position: absolute;
+        background-color: #a89c29;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .nav-bar .user-menu-dropdown a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        font-family: Monaco; /* Match other nav links */
+    }
+
+    .nav-bar .user-menu-dropdown a:hover {
+        background-color: #c14600; /* A slightly different hover color */
+        color: white;
+    }
+
+    .nav-bar .user-menu:hover .user-menu-dropdown {
+        display: block;
+    }
+    .nav-bar .user-menu > a { /* Style for the name link */
+        cursor: pointer; /* Indicate it's interactive */
+    }

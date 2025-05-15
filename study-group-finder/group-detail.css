@@ -1,0 +1,130 @@
+
+    /* General page improvements */
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #ffcf9d; /* From your style.css */
+        font-family: Monaco, sans-serif; /* From your style.css */
+    }
+    main {
+        flex-grow: 1; /* Ensures footer stays at bottom */
+        padding: 20px 15px; /* Add some padding to main content area */
+        max-width: 960px; /* Max width for content, centered */
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    /* Navigation dropdown styles (from previous step) */
+    .nav-bar .user-menu { position: relative; display: inline-block; }
+    .nav-bar .user-menu-dropdown { display: none; position: absolute; background-color: #a89c29; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 0 0 5px 5px;}
+    .nav-bar .user-menu-dropdown a { color: white; padding: 12px 16px; text-decoration: none; display: block; text-align: left; font-family: Monaco; }
+    .nav-bar .user-menu-dropdown a:hover { background-color: #c14600; color: white; }
+    .nav-bar .user-menu:hover .user-menu-dropdown { display: block; }
+    .nav-bar .user-menu > a { cursor: pointer; }
+
+    /* Section title style from your style.css (applied by class="sec") */
+    /* .sec { ... } is in your external style.css */
+    /* If .sec is too narrow (width: 40%), consider changing it in style.css or overriding here: */
+    section.sec { /* Overriding for this page if needed */
+        width: auto; /* Or a more appropriate width like 'max-content' */
+        margin-bottom: 30px; /* More space below section title */
+        text-align: center; /* Center the section title */
+    }
+
+    /* Styling for the main group detail box (assuming id="group-detail" is used) */
+    /* Your external style.css already has #group-detail. These are enhancements or overrides */
+    #group-detail {
+        background-color: #f5e7b2; /* From your style.css for similar containers */
+        padding: 25px 30px; /* Adjusted padding */
+        border-radius: 8px; /* Smoother radius */
+        border: 1px solid #e0a75e; /* Softer border than ridge */
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1); /* Softer shadow */
+        margin-top: 20px; /* Space from section title */
+        margin-bottom: 30px;
+    }
+
+    #group-detail h2 {
+        color: #c14600; /* From your style.css */
+        margin-top: 0;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e0a75e;
+        padding-bottom: 10px;
+    }
+
+    #group-detail p {
+        margin-bottom: 12px; /* Spacing between paragraphs */
+        line-height: 1.6;
+        color: #493628; /* Dark brown text */
+    }
+    #group-detail p strong {
+        color: #493628; /* Ensure strong text is also dark brown */
+    }
+
+    .actions {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding-top: 20px;
+        border-top: 1px dashed #e0a75e; /* Separator */
+        display: flex; /* For button alignment */
+        gap: 10px; /* Space between buttons */
+    }
+    /* Button styles are in your external style.css using IDs like #edit-link, #delete-button */
+
+    .comments {
+        margin-top: 30px;
+        border-top: 1px solid #e0a75e; /* Clearer separator */
+        padding-top: 25px;
+    }
+    .comments h3 {
+        color: #493628;
+        margin-bottom: 20px;
+    }
+    #commentForm textarea {
+        margin-bottom: 10px;
+        background-color: #fff; /* Lighter background for textarea */
+        border: 1px solid #e0a75e;
+        min-height: 80px;
+    }
+    /* #commentBtn style is in your external style.css */
+
+    .comment-item {
+        background-color: #ffcf9d1c; /* Very light background, derived from body */
+        border: 1px solid #f0a04b; /* Border derived from footer */
+        border-radius: 5px;
+        padding: 12px 18px;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .comment-item p {
+        margin-bottom: 5px;
+        color: #493628;
+    }
+    .comment-item p strong {
+        color: #c14600; /* Highlight commenter name */
+    }
+    .comment-item small {
+        color: #a89c29; /* From nav-bar bg */
+        font-size: 0.85em;
+    }
+    #comments-list .loading-comments {
+        text-align: center;
+        color: #493628;
+        padding: 20px;
+    }
+    /* Back to listings button style is in your external style.css via #listingbtn */
+    #listingbtn {
+        display: inline-block; /* Ensure it behaves well with margins */
+        margin-top: 20px;
+    }
+    footer {
+        margin-top: auto; /* Pushes footer to bottom in flex column */
+         background-color: #f0a04b; /* From your style.css */
+         color: #333; /* From your style.css */
+         padding: 10px; /* From your style.css */
+         text-align: left; /* From your style.css */
+         width: 100%;
+    }
+    .footer-content { /* If you wrap footer text */
+        padding-left: 15px;
+    }
